@@ -4,7 +4,7 @@
 
 class Position():
 
-    taken_pisitions = {}  # {(x=4, y=7): pawn7}
+    taken_pisitions = {}  # {(x=4, y=7): pawn7} # access with property
 
     def __init__(self, row, column) -> None:  # use decorators and make private x, y?
         Position.check_free(row, column)
@@ -18,10 +18,10 @@ class Position():
         pass
 
     def check_free(row, column):
-        try:
-            (row, column) in Position.taken_pisitions
-        except KeyError:
-            print('Alala')  # think of how to undo the operation for the user
+        if (row, column) in Position.taken_pisitions:
+            return False
+        else:
+            return True
 
 
 if __name__ == '__main__':

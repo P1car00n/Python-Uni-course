@@ -7,9 +7,9 @@ import chessfigure
 
 class Chessboard:
     def __init__(self) -> None:
-        self.initialize_board()
         self.existing_figures = {}
         self.create_figures()
+        self.initialize_board()
         self.killed_figures = {}
 
     def print_board(self):
@@ -19,17 +19,19 @@ class Chessboard:
                 print(j, end=' | ')
             print()
 
-        for i in self.board:
-            print(i)
+        # for i in self.board:
+        #     print(i)
 
     def initialize_board(self):
-        if not position.Position.taken_pisitions:
-            self.board = [[column + str(row) for column in string.ascii_lowercase[:8]]
-                          for row in range(1, 9)]  # {a=1, b =2} map it this way
-        else:
-            # untested
-            self.board = [[column + str(row) if position.Position.check_free(row, column) else column + str(
-                row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # + name from taken positions
+        # if not position.Position.taken_pisitions:
+        #     self.board = [[column + str(row) for column in string.ascii_lowercase[:8]]
+        #                   for row in range(1, 9)]  # {a=1, b =2} map it this way
+        # else:
+        #     # untested
+        #     self.board = [[column + str(row) if position.Position.check_free(row, column) else column + str(
+        #         row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # + name from taken positions
+        self.board = [[column + str(row) + ' ' + self.existing_figures[f'({row}, {string.ascii_lowercase.index(column) + 1})'].name if f'({row}, {string.ascii_lowercase.index(column) + 1})' in self.existing_figures else column + str(
+            row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)] # can and should be greatly optimized
 
     def create_figures(self):
         for i in range(1, 9):
@@ -44,17 +46,17 @@ class Chessboard:
         for i in range(1, 9, 7):
             self.existing_figures[f'({8}, {i})'] = chessfigure.Rook(
                 'black', position.Position(8, i))
-        for i in range(2, 8, 6):
+        for i in range(2, 9, 5):
             self.existing_figures[f'({1}, {i})'] = chessfigure.Knight(
                 'white', position.Position(1, i))
-        for i in range(2, 8, 6):
+        for i in range(2, 9, 5):
             self.existing_figures[f'({8}, {i})'] = chessfigure.Knight(
                 'black', position.Position(8, i))
-        for i in range(3, 7, 4):
+        for i in range(3, 8, 3):
             self.existing_figures[f'({1}, {i})'] = chessfigure.Bishop(
                 'white', position.Position(1, i))
-        for i in range(3, 7, 4):
-            self.existing_figures['f({8}, {i})'] = chessfigure.Bishop(
+        for i in range(3, 8, 3):
+            self.existing_figures[f'({8}, {i})'] = chessfigure.Bishop(
                 'black', position.Position(8, i))
         self.existing_figures[f'({1}, {4})'] = chessfigure.Queen(
             'white', position.Position(1, 4))
