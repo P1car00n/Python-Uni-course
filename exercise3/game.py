@@ -19,7 +19,7 @@ class Game():
 
 ''')
         print(
-            'I hope you know the rules. Grab another player, choose your colour and enjoy!',
+            'I hope you know the rules. Grab another player, choose your colour and enjoy! \n To move the chesspiece, type h1 to h2',
             '\n')
 
     def set_players(self, player1, player2):
@@ -36,4 +36,15 @@ if __name__ == "__main__":
         input('Name the 2nd player: '))
 
     ch1 = chessboard.Chessboard()
+
     ch1.print_board()
+
+    while True:
+        game1.player1_move = input('Player 1: ').split()[0:3:2]  # h1 to h2
+        ch1.move_piece(game1.player1_move)
+        ch1.initialize_board()
+        ch1.print_board()
+        game1.player2_move = input('Player 2: ').split()[0:3:2]
+        ch1.move_piece(game1.player2_move)
+        ch1.initialize_board()
+        ch1.print_board()

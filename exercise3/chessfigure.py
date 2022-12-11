@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import position
+
+
 class ChessFigure:
     def __init__(self, figure_cls, color, position) -> None:
         self.figure_cls = figure_cls  # see if needed as self further down the line
@@ -7,14 +10,17 @@ class ChessFigure:
         self.figure_type = figure_cls.FIGURE_TYPE
         self.number = figure_cls.number
         figure_cls.number += 1
-        self.name = self.color + ' ' + self.figure_type + ' ' + str(self.number)
+        self.name = self.color + ' ' + \
+            self.figure_type + ' ' + str(self.number)
         self.position = position
 
-    def move(self, position):
-        pass
+    def move(self, new_row, new_column):
+        self.position = position.Position(new_row, new_column)
+        print('Moved!')
 
-    def beat(self, position):
-        pass
+    def beat(self, new_row, new_column):
+        self.position = position.Position(new_row, new_column)
+        print('Beaten!')
 
 
 class Rook(ChessFigure):
@@ -59,6 +65,9 @@ class King(ChessFigure):
         if King.number > 1:
             King.number = 1
         ChessFigure.__init__(self, King, color, position)
+
+    def castle():
+        pass
 
 
 class Queen(ChessFigure):

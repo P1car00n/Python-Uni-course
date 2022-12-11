@@ -11,12 +11,6 @@ class Position():
         self.row = row
         self.column = column
 
-    def set_position():
-        pass
-
-    def change_position(self):
-        pass
-
     def check_free(row, column):
         if (row, column) in Position.taken_pisitions:
             return False
