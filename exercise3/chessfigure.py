@@ -14,13 +14,13 @@ class ChessFigure:
             self.figure_type + ' ' + str(self.number)
         self.position = position
 
-    def move(self, new_row, new_column):
+    def move(self, new_row, new_column, figure_type):
         self.position = position.Position(new_row, new_column)
-        print('Moved!')
+        print('Moved ' + figure_type + '!')
 
-    def beat(self, new_row, new_column):
+    def beat(self, new_row, new_column, figure_type):
         self.position = position.Position(new_row, new_column)
-        print('Beaten!')
+        print('Beaten by ' + figure_type + '!')
 
 
 class Rook(ChessFigure):
@@ -33,6 +33,12 @@ class Rook(ChessFigure):
             Rook.number = 1
         ChessFigure.__init__(self, Rook, color, position)
 
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, Rook.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, Rook.FIGURE_TYPE)
+
 
 class Knight(ChessFigure):
     FIGURE_TYPE = 'knight'
@@ -43,6 +49,12 @@ class Knight(ChessFigure):
         if Knight.number > 2:
             Knight.number = 1
         ChessFigure.__init__(self, Knight, color, position)
+
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, Knight.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, Knight.FIGURE_TYPE)
 
 
 class Bishop(ChessFigure):
@@ -55,6 +67,12 @@ class Bishop(ChessFigure):
             Bishop.number = 1
         ChessFigure.__init__(self, Bishop, color, position)
 
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, Bishop.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, Bishop.FIGURE_TYPE)
+
 
 class King(ChessFigure):
     FIGURE_TYPE = 'king'
@@ -66,8 +84,15 @@ class King(ChessFigure):
             King.number = 1
         ChessFigure.__init__(self, King, color, position)
 
-    def castle():
-        pass
+    def castle(self, new_row, new_column):
+        self.position = position.Position(new_row, new_column)
+        print('And castled!')
+
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, King.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, King.FIGURE_TYPE)
 
 
 class Queen(ChessFigure):
@@ -80,6 +105,12 @@ class Queen(ChessFigure):
             Queen.number = 1
         ChessFigure.__init__(self, Queen, color, position)
 
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, Queen.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, Queen.FIGURE_TYPE)
+
 
 class Pawn(ChessFigure):
     FIGURE_TYPE = 'pawn'
@@ -90,6 +121,12 @@ class Pawn(ChessFigure):
         if Pawn.number > 8:
             Pawn.number = 1
         ChessFigure.__init__(self, Pawn, color, position)
+
+    def move(self, new_row, new_column):
+        ChessFigure.move(self, new_row, new_column, Pawn.FIGURE_TYPE)
+
+    def beat(self, new_row, new_column):
+        ChessFigure.beat(self, new_row, new_column, Pawn.FIGURE_TYPE)
 
 
 if __name__ == '__main__':

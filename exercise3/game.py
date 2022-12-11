@@ -40,11 +40,17 @@ if __name__ == "__main__":
     ch1.print_board()
 
     while True:
-        game1.player1_move = input('Player 1: ').split()[0:3:2]  # h1 to h2
-        ch1.move_piece(game1.player1_move)
+        game1.player1_move = input('Player 1: ').split()  # [0:3:2]  # h1 to h2
+        if 'castle' in game1.player1_move:
+            ch1.move_piece(game1.player1_move[0:3:2], True)  # h1 castle h2
+        else:
+            ch1.move_piece(game1.player1_move[0:3:2])
         ch1.initialize_board()
         ch1.print_board()
-        game1.player2_move = input('Player 2: ').split()[0:3:2]
-        ch1.move_piece(game1.player2_move)
+        game1.player2_move = input('Player 2: ').split()  # [0:3:2]
+        if 'castle' in game1.player2_move:
+            ch1.move_piece(game1.player2_move[0:3:2], True)
+        else:
+            ch1.move_piece(game1.player2_move[0:3:2])
         ch1.initialize_board()
         ch1.print_board()

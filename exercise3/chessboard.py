@@ -31,8 +31,11 @@ class Chessboard:
         #     self.board = [[column + str(row) if position.Position.check_free(row, column) else column + str(
         # row) for column in string.ascii_lowercase[:8]] for row in range(1,
         # 9)]  # + name from taken positions
-        self.board = [[column + str(row) + ' ' + self.existing_figures[f'({row}, {string.ascii_lowercase.index(column) + 1})'].name if f'({row}, {string.ascii_lowercase.index(column) + 1})' in self.existing_figures else column + str(
-            row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # can and should be greatly optimized
+        self.board = [[column +
+                       str(row) +
+                       ' ' +
+                       self.existing_figures[f'({row}, {string.ascii_lowercase.index(column) + 1})'].name if f'({row}, {string.ascii_lowercase.index(column) + 1})' in self.existing_figures else column +
+                       str(row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # can and should be greatly optimized
 
     def create_figures(self):
         for i in range(1, 9):
@@ -68,33 +71,76 @@ class Chessboard:
         self.existing_figures[f'({8}, {5})'] = chessfigure.King(
             'black', position.Position(8, 5))
 
-    def move_piece(self, command):
+    def move_piece(self, command, castling=False):
         old_position, new_position = command
         #print(old_position, new_position)
         old_column = string.ascii_lowercase.index(old_position[0]) + 1
         old_row = old_position[1]
+
+        # if castling:
+        #    new_row = old_row
+        #    if new_position == 'left':
+        #        if color == 'White':
+        #            pass
+        #        elif color == 'Black':
+        #            pass
+        #    elif new_position == 'right':
+        #        if color == 'White':
+        #            pass
+        #        elif color == 'Black':
+        #            pass
+        #    return
+
         new_column = string.ascii_lowercase.index(new_position[0]) + 1
         new_row = new_position[1]
+
         #print(old_column, old_row, new_column, new_row)
-        #print('before')
-        #for key, value in self.existing_figures.items():
+        # print('before')
+        # for key, value in self.existing_figures.items():
         #    print(key, value)
 
         #print(f'{new_row}, {new_column}')
         #print(f'({new_row}, {new_column})' in self.existing_figures)
-        #print(self.existing_figures)
+        # print(self.existing_figures)
+
+        if castling:
+            if new_column == 1:
+                new_column_rook = new_column + 1
+            elif new_column == 8:
+                new_column_rook = new_column - 1
+            new_row_rook = old_row
+
+            # rook:
+            print(new_row_rook, new_column_rook)
+            self.existing_figures[(f'({new_row}, {new_column})')].move(
+                new_row_rook, new_column_rook)
+            self.existing_figures[f'({new_row_rook}, {new_column_rook})'] = self.existing_figures[(
+                f'({new_row}, {new_column})')]
+            del self.existing_figures[(f'({new_row}, {new_column})')]
+
+            # king:
+            self.existing_figures[(f'({old_row}, {old_column})')].castle(
+                new_row, new_column)
+            self.existing_figures[f'({new_row}, {new_column})'] = self.existing_figures[(
+                f'({old_row}, {old_column})')]
+            del self.existing_figures[(f'({old_row}, {old_column})')]
+
+            return
+
         if (f'({new_row}, {new_column})') in self.existing_figures:
             self.existing_figures[(f'({old_row}, {old_column})')].beat(
                 new_row, new_column)
-            self.existing_figures[f'({new_row}, {new_column})'] = self.existing_figures[(f'({old_row}, {old_column})')]
+            self.existing_figures[f'({new_row}, {new_column})'] = self.existing_figures[(
+                f'({old_row}, {old_column})')]
             del self.existing_figures[(f'({old_row}, {old_column})')]
         else:
             self.existing_figures[(f'({old_row}, {old_column})')].move(
                 new_row, new_column)
-            self.existing_figures[f'({new_row}, {new_column})'] = self.existing_figures[(f'({old_row}, {old_column})')]
+            self.existing_figures[f'({new_row}, {new_column})'] = self.existing_figures[(
+                f'({old_row}, {old_column})')]
             del self.existing_figures[(f'({old_row}, {old_column})')]
-        #print('after')
-        #for key, value in self.existing_figures.items():
+        # print('after')
+        # for key, value in self.existing_figures.items():
         #    print(key, value)
 
 
