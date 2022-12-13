@@ -149,4 +149,5 @@ class Chessboard:
 
 
 if __name__ == '__main__':
-    pass
+    ch1 = Chessboard()
+    ch1.print_board()

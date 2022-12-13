@@ -19,4 +19,5 @@ class Position():
 
 
 if __name__ == '__main__':
-    pass
+    p1 = Position(1, 2)
+    print(p1.column, p1.row)
