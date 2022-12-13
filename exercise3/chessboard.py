@@ -34,8 +34,12 @@ class Chessboard:
         self.board = [[column +
                        str(row) +
                        ' ' +
-                       self.existing_figures[f'({row}, {string.ascii_lowercase.index(column) + 1})'].name if f'({row}, {string.ascii_lowercase.index(column) + 1})' in self.existing_figures else column +
-                       str(row) for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # can and should be greatly optimized
+                       self.existing_figures[f'({row}, {string.ascii_lowercase.index(column) + 1})'].name if f'({row}, {string.ascii_lowercase.index(column) + 1})' in self.existing_figures else 7 *
+                       ' ' +
+                       column +
+                       str(row) +
+                       7 *
+                       ' ' for column in string.ascii_lowercase[:8]] for row in range(1, 9)]  # can and should be greatly optimized
 
     def create_figures(self):
         for i in range(1, 9):
