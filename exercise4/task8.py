@@ -6,9 +6,11 @@ array'''
 
 import numpy as np
 
+
 def generate():
     for i in range(10):
         yield i
+
 
 arr = np.fromiter(generate(), int)
 
