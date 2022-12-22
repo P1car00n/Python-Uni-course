@@ -2,7 +2,7 @@
 
 # Work Instructions
 
-The objctive of this work is to practice usage of the numpy and matplotlib tasks. 
+The objective of this work is to practice usage of the numpy and matplotlib tasks. 
 
 For any 2 tasks add pie and bar plots. 
 
@@ -12,4 +12,4 @@ See Numpy tasks.pdf
 
 # Installation
 
-`python - m pip install - r requirements.txt`
+`python - m pip install -r requirements.txt`
