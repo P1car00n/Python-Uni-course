@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+'''Read CSV file and transfer it into DataFrame'''
+
 import pandas as pd
 
 data_frame = pd.read_csv('data.csv')
