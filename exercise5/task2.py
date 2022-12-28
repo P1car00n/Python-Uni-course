@@ -7,4 +7,7 @@ import string
 
 ser = pd.Series([x for x in string.ascii_lowercase])
 
-print(ser.to_frame().reset_index())
+print('Here is a serries: \n', ser)
+print(
+    'And here is a serries transferred into index column of the dataframe: \n',
+    ser.to_frame().reset_index())
