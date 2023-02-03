@@ -4,4 +4,3 @@ sense = SenseHat()
 
 while True:
     sense.show_message(text_string="60")
-
