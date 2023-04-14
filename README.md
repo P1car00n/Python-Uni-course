@@ -1,6 +1,6 @@
 # Python-Uni-course
 ## How to use it?
-Open the exercise folder you need and download the files of interest. You can also check the images out to see the expected result.
+Open the exercise folder you need and download the files of interest.
 
 All scripts can be run using any editor and the default python installation unless the opposite is specified in the requirements or readme files.
 
