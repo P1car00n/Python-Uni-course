@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-input_directory_path = os.fsencode(input('Inout directory: '))
+input_directory_path = os.fsencode(input('Input directory: '))
 output_directory_path = input('Output directory: ') + '/'
 
 for file in os.scandir(input_directory_path):
