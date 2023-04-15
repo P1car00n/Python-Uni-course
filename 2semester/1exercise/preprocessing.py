@@ -1,8 +1,49 @@
+import os
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-df = pd.read_csv('/home/arthur/Uni/lab1/data/preprocessing/all_completed_laps_diff.csv')
+input_directory_path = os.fsencode(input('Inout directory: '))
+output_directory_path = input('Output directory: ') + '/'
 
-df.fillna(0)
+for file in os.scandir(input_directory_path):
+    file_path = file.path.decode('ascii')
+    if file_path.endswith('.csv'):
+        df = pd.read_csv(file_path)
 
-df_scaled = MinMaxScaler().fit_transform(df.to_numpy())
+        df.fillna(0)
+
+        df[['Penalty',
+            'Cost',
+            'Presentation',
+            'Design',
+            'Accel',
+            'Skid_pad',
+            'Autocross',
+            'Endurance',
+            'Efficiency',
+            'Total']] = MinMaxScaler().fit_transform(
+            df[
+                [
+                    'Penalty',
+                    'Cost',
+                    'Presentation',
+                    'Design',
+                    'Accel',
+                    'Skid_pad',
+                    'Autocross',
+                    'Endurance',
+                    'Efficiency',
+                    'Total']])
+
+        pd.DataFrame(
+            df,
+            columns=df.columns).to_json(
+            output_directory_path +
+            file.name.decode('ascii').removesuffix('.csv') +
+            '.json')
+        pd.DataFrame(
+            df,
+            columns=df.columns).to_xml(
+            output_directory_path +
+            file.name.decode('ascii').removesuffix('.csv') +
+            '.xml')
