@@ -42,11 +42,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 dataset_train = pd.read_csv(
     '/home/arthur/Uni/lab2/data/Google_Stock_Price_Train.csv',
     thousands=',',
-    date_parser='Date')  # input()
+    date_format='%m/%d/%Y')  # input()
 dataset_test = pd.read_csv(
     '/home/arthur/Uni/lab2/data/Google_Stock_Price_Test.csv',
     thousands=',',
-    date_parser='Date')
+    date_format='%m/%d/%Y')
 # here I'm setting what column I want to have predicted
 X_dataset_train = dataset_train.drop(['Close', 'Date'], axis=1)
 y_dataset_train = dataset_train['Close']
