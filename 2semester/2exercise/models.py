@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.datasets import fetch_california_housing
@@ -52,18 +51,11 @@ dataset_test = pd.read_csv(
 X_dataset_train = dataset_train.drop(['Close', 'Date'], axis=1)
 y_dataset_train = dataset_train['Close']
 X_dataset_test = dataset_test.drop(['Close', 'Date'], axis=1)
-y_dataset_train = dataset_train['Close']
-lrm_cal_intercept_google = LinearRegression(
-    fit_intercept=True).fit(X_dataset_train, y_dataset_train)
-y_pred_lrm_cal_intercept_google = get_prediction(
-    lrm_cal_intercept_google, X_dataset_test)
-print("Prediction accuracy (R^2) with intercept; google: ",
-      lrm_cal_intercept_google.score(X_dataset_train, y_dataset_train))
-print("Prediction accuracy (R^2) with intercept; google y_test: ",
-      lrm_cal_intercept_google.score(X_dataset_train, y_dataset_train))
+y_dataset_test = dataset_test['Close']
 
 
 if __name__ == '__main__':
+    # houses
     lrm_cal_intercept = LRM(
         X_train,
         y_train,
@@ -94,3 +86,41 @@ if __name__ == '__main__':
         r2_score(
             y_test,
             y_pred_lrm_cal_no_intercept))
+
+    # google shares
+    lrm_gog_intercept = LRM(
+        X_dataset_train,
+        y_dataset_train,
+        description='linear regression model with intercept for Google share prices',
+        fit_intercept=True)
+    lrm_gog_no_intercept = LRM(
+        X_dataset_train,
+        y_dataset_train,
+        description='linear regression model with no intercept for Google share prices',
+        fit_intercept=False)
+    y_pred_lrm_gog_intercept = lrm_gog_intercept.get_prediction(X_dataset_test)
+    y_pred_lrm_gog_no_intercept = lrm_gog_no_intercept.get_prediction(
+        X_dataset_test)
+    print("Prediction accuracy (R^2) for", lrm_gog_intercept,
+          'is', lrm_gog_intercept.get_score(X_dataset_train, y_dataset_train))
+    print(
+        "Prediction accuracy (R^2) for",
+        lrm_gog_no_intercept,
+        'is',
+        lrm_gog_no_intercept.get_score(
+            X_dataset_train,
+            y_dataset_train))
+    print(
+        "Prediction accuracy (R^2) of y_test for",
+        lrm_gog_intercept,
+        'is',
+        r2_score(
+            y_dataset_test,
+            y_pred_lrm_gog_intercept))
+    print(
+        "Prediction accuracy (R^2) of y_test for",
+        lrm_gog_intercept,
+        'is',
+        r2_score(
+            y_dataset_test,
+            y_pred_lrm_gog_no_intercept))
