@@ -5,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 # potentially add some oop
+def get_prediction(model, samples):
+    return model.predict(samples)
 
 
 # now could use it for the google thing, since it's in csv # for
@@ -19,10 +21,13 @@ lrm_cal_no_intercept = LinearRegression(
     fit_intercept=False).fit(
         X_train, y_train)
 
-y_pred = lrm_cal_intercept.predict(X_test)
+y_pred_lrm_cal_intercapt = get_prediction(lrm_cal_intercept, X_test)
+# Old: y_pred_lrm_cal_no_intercapt = lrm_cal_no_intercept.predict(X_test)
+y_pred_lrm_cal_no_intercapt = get_prediction(lrm_cal_no_intercept, X_test)
 
-print(lrm_cal_intercept.score(X_train, y_train))
-print(lrm_cal_no_intercept.score(X_train, y_train))
-print(r2_score(y_test, y_pred))
+print("Prediction accuracy (R^2) with intercept: ", lrm_cal_intercept.score(X_train, y_train))
+print("Prediction accuracy (R^2) with no intercept: ", lrm_cal_no_intercept.score(X_train, y_train))
+print("Prediction accuracy (R^2) with intercept for y_test: ", r2_score(y_test, y_pred_lrm_cal_intercapt))
+print("Prediction accuracy (R^2) with no intercept for y_test: ", r2_score(y_test, y_pred_lrm_cal_no_intercapt))
 # print(lrm_cal_intercept.score(y_test, lrm_cal_intercept.predict(X_test)))
 # print(lrm_cal_no_intercept.score(y_test, lrm_cal_no_intercept.predict(X_test)))
