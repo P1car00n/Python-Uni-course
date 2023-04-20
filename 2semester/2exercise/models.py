@@ -5,16 +5,34 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-# potentially add some oop
-
 
 def get_prediction(model, samples):
     return model.predict(samples)
 
+class Model:
+    
+    def __init__(self, description, model):
+        self.description = description
+        self.model = model
 
-# now could use it for the google thing, since it's in csv # for
-# predicting may use my fnd where I split the data into training and
-# predicting
+    def get_prediction(self, samples):
+        return self.model.predict(samples)
+
+    def get_score(self, X, y):
+        return self.model.score(X, y)
+
+    def __repr__(self) -> str:
+        return self.description
+
+
+class LRM(Model):
+
+    def __init__(self, X, y, description='Linear regression model', **kwargs):
+        # **kwargs is for fit_intercept=True
+        Model.__init__(self, description, model=LinearRegression(**kwargs).fit(X, y))
+
+    
+
 X, y = fetch_california_housing(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
@@ -56,3 +74,6 @@ print("Prediction accuracy (R^2) with no intercept for y_test: ",
       r2_score(y_test, y_pred_lrm_cal_no_intercept))
 # print(lrm_cal_intercept.score(y_test, lrm_cal_intercept.predict(X_test)))
 # print(lrm_cal_no_intercept.score(y_test, lrm_cal_no_intercept.predict(X_test)))
+
+if __name__ == '__main__':
+    pass
