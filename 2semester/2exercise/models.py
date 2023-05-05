@@ -4,6 +4,8 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
+import data_provider
+
 
 def get_prediction(model, samples):
     return model.predict(samples)
@@ -33,8 +35,8 @@ class LRM(Model):
                        model=LinearRegression(**kwargs).fit(X, y))
 
 
-X, y = fetch_california_housing(return_X_y=True)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# X, y = fetch_california_housing(return_X_y=True)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # should put it in a separate module
 # setting thousands since there are numbers like 1,000,111 in the dataset;
@@ -55,6 +57,9 @@ y_dataset_test = dataset_test['Close']
 
 
 if __name__ == '__main__':
+    # set Xs and ys
+    X_train, X_test, y_train, y_test = data_provider.getCaliforniaXy()
+
     # houses
     lrm_cal_intercept = LRM(
         X_train,
@@ -86,6 +91,8 @@ if __name__ == '__main__':
         r2_score(
             y_test,
             y_pred_lrm_cal_no_intercept))
+
+    # reinitialize Xs and ys
 
     # google shares
     lrm_gog_intercept = LRM(
