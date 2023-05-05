@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 
 import data_provider
 
@@ -33,11 +34,20 @@ class LRM(Model):
                        model=LinearRegression(**kwargs).fit(X, y))
 
 
+class RidgeModel(Model):
+
+    def __init__(self, X, y, description='Ridge regression model', **kwargs):
+        # **kwargs is for alpha
+        Model.__init__(self, description,
+                       model=Ridge(**kwargs).fit(X, y))
+
+
 if __name__ == '__main__':
     # set Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCaliforniaXy()
 
     # houses
+    # Linear Regression
     lrm_cal_intercept = LRM(
         X_train,
         y_train,
@@ -68,6 +78,53 @@ if __name__ == '__main__':
         r2_score(
             y_test,
             y_pred_lrm_cal_no_intercept))
+
+    # Ridge regression
+    rdg_cal_alpha1 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 1.0 for California housing prices',
+        alpha=1.0)
+    rdg_cal_alpha10 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 10.0 for California housing prices',
+        alpha=10.0)
+    rdg_cal_alpha100 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 100.0 for California housing prices',
+        alpha=100.0)
+    y_pred_rdg_cal_alpha1 = rdg_cal_alpha1.get_prediction(X_test)
+    y_pred_rdg_cal_alpha10 = rdg_cal_alpha10.get_prediction(X_test)
+    y_pred_rdg_cal_alpha100 = rdg_cal_alpha100.get_prediction(X_test)
+    print("Prediction accuracy (R^2) for", rdg_cal_alpha1,
+          'is', rdg_cal_alpha1.get_score(X_train, y_train))
+    print("Prediction accuracy (R^2) for", rdg_cal_alpha10,
+          'is', rdg_cal_alpha10.get_score(X_train, y_train))
+    print("Prediction accuracy (R^2) for", rdg_cal_alpha100,
+          'is', rdg_cal_alpha100.get_score(X_train, y_train))
+    print(
+        "Prediction accuracy (R^2) of y_test for",
+        rdg_cal_alpha1,
+        'is',
+        r2_score(
+            y_test,
+            y_pred_rdg_cal_alpha1))
+    print(
+        "Prediction accuracy (R^2) of y_test for",
+        rdg_cal_alpha10,
+        'is',
+        r2_score(
+            y_test,
+            y_pred_rdg_cal_alpha10))
+    print(
+        "Prediction accuracy (R^2) of y_test for",
+        rdg_cal_alpha100,
+        'is',
+        r2_score(
+            y_test,
+            y_pred_rdg_cal_alpha100))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
