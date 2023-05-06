@@ -8,7 +8,6 @@ from sklearn.pipeline import make_pipeline
 import data_provider
 
 
-
 class Model:
 
     def __init__(self, description, model):
@@ -24,8 +23,8 @@ class Model:
     def __repr__(self) -> str:
         return self.description
 
-# Multiple inheritance, since the pipiline further down below expects a LinearRegression instance
-class LRM(Model, LinearRegression):
+
+class LRM(Model):
 
     def __init__(self, X, y, description='Linear regression model', **kwargs):
         # **kwargs is for fit_intercept=True
@@ -39,6 +38,17 @@ class RidgeModel(Model):
         # **kwargs is for alpha
         Model.__init__(self, description,
                        model=Ridge(**kwargs).fit(X, y))
+
+
+class LinearPipiliner(Model):
+    def __init__(self, X, y, description='Polynomial linear regression model'):
+        Model.__init__(
+            self,
+            description,
+            model=make_pipeline(
+                PolynomialFeatures(),
+                StandardScaler(),
+                LinearRegression()).fit(X, y))
 
 
 if __name__ == '__main__':
@@ -103,14 +113,18 @@ if __name__ == '__main__':
             y_pred_rdg_cal_alpha1,
             y_pred_rdg_cal_alpha10,
             y_pred_rdg_cal_alpha100))
-    
+
     # Plynomial stuff + linear regression
-    #lrm_pol = LRM(
-    #    X_train,
-    #    y_train,
-    #    description='linear regression model <<polynomized>> for California housing prices',
-    #    fit_intercept=True)
-    #pol = make_pipeline(PolynomialFeatures(), StandardScaler(), lrm_pol)
+    lrm_pol = LinearPipiliner(
+        X_train,
+        y_train,
+        description='linear regression model <<polynomized>> for California housing prices')
+    y_pred_lrm_pol = lrm_pol.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lrm_pol,),
+        predictions=(
+            y_pred_lrm_pol,))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
