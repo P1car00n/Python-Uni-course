@@ -109,6 +109,7 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
 
     # google shares
+    # Linear Regression
     lrm_gog_intercept = LRM(
         X_train,
         y_train,
@@ -122,26 +123,12 @@ if __name__ == '__main__':
     y_pred_lrm_gog_intercept = lrm_gog_intercept.get_prediction(X_test)
     y_pred_lrm_gog_no_intercept = lrm_gog_no_intercept.get_prediction(
         X_test)
-    print("Prediction accuracy (R^2) for", lrm_gog_intercept,
-          'is', lrm_gog_intercept.get_score(X_train, y_train))
-    print(
-        "Prediction accuracy (R^2) for",
-        lrm_gog_no_intercept,
-        'is',
-        lrm_gog_no_intercept.get_score(
-            X_train,
-            y_train))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        lrm_gog_intercept,
-        'is',
-        r2_score(
-            y_test,
-            y_pred_lrm_gog_intercept))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        lrm_gog_intercept,
-        'is',
-        r2_score(
-            y_test,
+    printAccuracy(
+        models=(
+            lrm_gog_intercept,
+            lrm_gog_no_intercept),
+        predictions=(
+            y_pred_lrm_gog_intercept,
             y_pred_lrm_gog_no_intercept))
+
+    # Ridge regression
