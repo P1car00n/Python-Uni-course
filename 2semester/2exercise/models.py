@@ -2,12 +2,11 @@ import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.pipeline import make_pipeline
 
 import data_provider
 
-
-def get_prediction(model, samples):
-    return model.predict(samples)
 
 
 class Model:
@@ -25,8 +24,8 @@ class Model:
     def __repr__(self) -> str:
         return self.description
 
-
-class LRM(Model):
+# Multiple inheritance, since the pipiline further down below expects a LinearRegression instance
+class LRM(Model, LinearRegression):
 
     def __init__(self, X, y, description='Linear regression model', **kwargs):
         # **kwargs is for fit_intercept=True
@@ -104,6 +103,14 @@ if __name__ == '__main__':
             y_pred_rdg_cal_alpha1,
             y_pred_rdg_cal_alpha10,
             y_pred_rdg_cal_alpha100))
+    
+    # Plynomial stuff + linear regression
+    #lrm_pol = LRM(
+    #    X_train,
+    #    y_train,
+    #    description='linear regression model <<polynomized>> for California housing prices',
+    #    fit_intercept=True)
+    #pol = make_pipeline(PolynomialFeatures(), StandardScaler(), lrm_pol)
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
