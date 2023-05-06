@@ -43,6 +43,14 @@ class RidgeModel(Model):
 
 
 if __name__ == '__main__':
+    def printAccuracy(models, predictions):
+        for (model, prediction) in zip(models, predictions):
+            # Xs and ys are visible in the scope
+            print("Prediction accuracy (R^2) for", model,
+                  'is', model.get_score(X_train, y_train))
+            print("Prediction accuracy (R^2) of y_test for",
+                  model, 'is', r2_score(y_test, prediction))
+
     # set Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCaliforniaXy()
 
@@ -60,24 +68,31 @@ if __name__ == '__main__':
         fit_intercept=False)
     y_pred_lrm_cal_intercept = lrm_cal_intercept.get_prediction(X_test)
     y_pred_lrm_cal_no_intercept = lrm_cal_no_intercept.get_prediction(X_test)
-    print("Prediction accuracy (R^2) for", lrm_cal_intercept,
-          'is', lrm_cal_intercept.get_score(X_train, y_train))
-    print("Prediction accuracy (R^2) for", lrm_cal_no_intercept,
-          'is', lrm_cal_no_intercept.get_score(X_train, y_train))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        lrm_cal_intercept,
-        'is',
-        r2_score(
-            y_test,
-            y_pred_lrm_cal_intercept))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        lrm_cal_no_intercept,
-        'is',
-        r2_score(
-            y_test,
+    printAccuracy(
+        models=(
+            lrm_cal_intercept,
+            lrm_cal_no_intercept),
+        predictions=(
+            y_pred_lrm_cal_intercept,
             y_pred_lrm_cal_no_intercept))
+    # print("Prediction accuracy (R^2) for", lrm_cal_intercept,
+    #      'is', lrm_cal_intercept.get_score(X_train, y_train))
+    # print("Prediction accuracy (R^2) for", lrm_cal_no_intercept,
+    #      'is', lrm_cal_no_intercept.get_score(X_train, y_train))
+    # print(
+    #    "Prediction accuracy (R^2) of y_test for",
+    #    lrm_cal_intercept,
+    #    'is',
+    #    r2_score(
+    #        y_test,
+    #        y_pred_lrm_cal_intercept))
+    # print(
+    #    "Prediction accuracy (R^2) of y_test for",
+    #    lrm_cal_no_intercept,
+    #    'is',
+    #    r2_score(
+    #        y_test,
+    #        y_pred_lrm_cal_no_intercept))
 
     # Ridge regression
     rdg_cal_alpha1 = RidgeModel(
