@@ -4,6 +4,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.pipeline import make_pipeline
+from sklearn.metrics import mean_absolute_error
 
 import data_provider
 
@@ -53,11 +54,16 @@ class LinearPipiliner(Model):
 
 if __name__ == '__main__':
     def printAccuracy(models, predictions):
+        print('~'*100)
         for (model, prediction) in zip(models, predictions):
+            train_MAE = model.get_prediction(X_train)
+            train_MAE_acc = mean_absolute_error(y_train, train_MAE) 
+            test_MAE_acc = mean_absolute_error(y_test, prediction)
+            print('Mean absolute errors for', model, 'are', train_MAE_acc, 'for train data and', test_MAE_acc, 'for test data')
             # Xs and ys are visible in the scope
-            print("Prediction accuracy (R^2) for", model,
+            print('Prediction accuracy (R^2) for', model,
                   'is', model.get_score(X_train, y_train))
-            print("Prediction accuracy (R^2) of y_test for",
+            print('Prediction accuracy (R^2) of y_test for',
                   model, 'is', r2_score(y_test, prediction))
 
     # set Xs and ys
