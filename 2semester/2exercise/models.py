@@ -115,16 +115,16 @@ if __name__ == '__main__':
             y_pred_rdg_cal_alpha100))
 
     # Plynomial stuff + linear regression
-    lrm_pol = LinearPipiliner(
+    lrm_cal_pol = LinearPipiliner(
         X_train,
         y_train,
         description='linear regression model <<polynomized>> for California housing prices')
-    y_pred_lrm_pol = lrm_pol.get_prediction(X_test)
+    y_pred_cal_pol = lrm_cal_pol.get_prediction(X_test)
     printAccuracy(
         models=(
-            lrm_pol,),
+            lrm_cal_pol,),
         predictions=(
-            y_pred_lrm_pol,))
+            y_pred_cal_pol,))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
@@ -180,3 +180,15 @@ if __name__ == '__main__':
             y_pred_rdg_gog_alpha1,
             y_pred_rdg_gog_alpha10,
             y_pred_rdg_gog_alpha100))
+
+    # Plynomial stuff + linear regression
+    lrm_gog_pol = LinearPipiliner(
+        X_train,
+        y_train,
+        description='linear regression model <<polynomized>> for Google share prices')
+    y_pred_gog_pol = lrm_gog_pol.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lrm_gog_pol,),
+        predictions=(
+            y_pred_gog_pol,))
