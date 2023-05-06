@@ -75,24 +75,6 @@ if __name__ == '__main__':
         predictions=(
             y_pred_lrm_cal_intercept,
             y_pred_lrm_cal_no_intercept))
-    # print("Prediction accuracy (R^2) for", lrm_cal_intercept,
-    #      'is', lrm_cal_intercept.get_score(X_train, y_train))
-    # print("Prediction accuracy (R^2) for", lrm_cal_no_intercept,
-    #      'is', lrm_cal_no_intercept.get_score(X_train, y_train))
-    # print(
-    #    "Prediction accuracy (R^2) of y_test for",
-    #    lrm_cal_intercept,
-    #    'is',
-    #    r2_score(
-    #        y_test,
-    #        y_pred_lrm_cal_intercept))
-    # print(
-    #    "Prediction accuracy (R^2) of y_test for",
-    #    lrm_cal_no_intercept,
-    #    'is',
-    #    r2_score(
-    #        y_test,
-    #        y_pred_lrm_cal_no_intercept))
 
     # Ridge regression
     rdg_cal_alpha1 = RidgeModel(
@@ -113,32 +95,14 @@ if __name__ == '__main__':
     y_pred_rdg_cal_alpha1 = rdg_cal_alpha1.get_prediction(X_test)
     y_pred_rdg_cal_alpha10 = rdg_cal_alpha10.get_prediction(X_test)
     y_pred_rdg_cal_alpha100 = rdg_cal_alpha100.get_prediction(X_test)
-    print("Prediction accuracy (R^2) for", rdg_cal_alpha1,
-          'is', rdg_cal_alpha1.get_score(X_train, y_train))
-    print("Prediction accuracy (R^2) for", rdg_cal_alpha10,
-          'is', rdg_cal_alpha10.get_score(X_train, y_train))
-    print("Prediction accuracy (R^2) for", rdg_cal_alpha100,
-          'is', rdg_cal_alpha100.get_score(X_train, y_train))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        rdg_cal_alpha1,
-        'is',
-        r2_score(
-            y_test,
-            y_pred_rdg_cal_alpha1))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        rdg_cal_alpha10,
-        'is',
-        r2_score(
-            y_test,
-            y_pred_rdg_cal_alpha10))
-    print(
-        "Prediction accuracy (R^2) of y_test for",
-        rdg_cal_alpha100,
-        'is',
-        r2_score(
-            y_test,
+    printAccuracy(
+        models=(
+            rdg_cal_alpha1,
+            rdg_cal_alpha10,
+            rdg_cal_alpha100),
+        predictions=(
+            y_pred_rdg_cal_alpha1,
+            y_pred_rdg_cal_alpha10,
             y_pred_rdg_cal_alpha100))
 
     # reinitialize Xs and ys
