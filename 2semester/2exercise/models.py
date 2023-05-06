@@ -132,3 +132,30 @@ if __name__ == '__main__':
             y_pred_lrm_gog_no_intercept))
 
     # Ridge regression
+    rdg_gog_alpha1 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 1.0 for Google share prices',
+        alpha=1.0)
+    rdg_gog_alpha10 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 10.0 for Google share prices',
+        alpha=10.0)
+    rdg_gog_alpha100 = RidgeModel(
+        X_train,
+        y_train,
+        description='ridge regression model with alpha = 100.0 for Google share prices',
+        alpha=100.0)
+    y_pred_rdg_gog_alpha1 = rdg_gog_alpha1.get_prediction(X_test)
+    y_pred_rdg_gog_alpha10 = rdg_gog_alpha10.get_prediction(X_test)
+    y_pred_rdg_gog_alpha100 = rdg_gog_alpha100.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            rdg_gog_alpha1,
+            rdg_gog_alpha10,
+            rdg_gog_alpha100),
+        predictions=(
+            y_pred_rdg_gog_alpha1,
+            y_pred_rdg_gog_alpha10,
+            y_pred_rdg_gog_alpha100))
