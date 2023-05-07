@@ -1,4 +1,4 @@
-from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error, mean_squared_error
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.pipeline import make_pipeline
@@ -77,6 +77,18 @@ if __name__ == '__main__':
                 train_MAPE_acc,
                 'for train data and',
                 test_MAPE_acc,
+                'for test data')
+
+            # RMSE
+            train_RMSE_acc = mean_squared_error(y_train, train_E)
+            test_RMSE_acc = mean_squared_error(y_test, prediction)
+            print(
+                'Mean absolute percentage errors for',
+                model,
+                'are',
+                train_RMSE_acc,
+                'for train data and',
+                test_RMSE_acc,
                 'for test data')
 
             # Xs and ys are visible in the scope
