@@ -1,10 +1,7 @@
-import pandas as pd
-from sklearn.metrics import r2_score
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
+from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.pipeline import make_pipeline
-from sklearn.metrics import mean_absolute_error
 
 import data_provider
 
@@ -54,12 +51,34 @@ class LinearPipiliner(Model):
 
 if __name__ == '__main__':
     def printAccuracy(models, predictions):
-        print('~'*100)
+        print('~' * 100)
         for (model, prediction) in zip(models, predictions):
-            train_MAE = model.get_prediction(X_train)
-            train_MAE_acc = mean_absolute_error(y_train, train_MAE) 
+            train_E = model.get_prediction(X_train)
+
+            # MAE
+            train_MAE_acc = mean_absolute_error(y_train, train_E)
             test_MAE_acc = mean_absolute_error(y_test, prediction)
-            print('Mean absolute errors for', model, 'are', train_MAE_acc, 'for train data and', test_MAE_acc, 'for test data')
+            print(
+                'Mean absolute errors for',
+                model,
+                'are',
+                train_MAE_acc,
+                'for train data and',
+                test_MAE_acc,
+                'for test data')
+
+            # MAPE
+            train_MAPE_acc = mean_absolute_percentage_error(y_train, train_E)
+            test_MAPE_acc = mean_absolute_percentage_error(y_test, prediction)
+            print(
+                'Mean absolute percentage errors for',
+                model,
+                'are',
+                train_MAPE_acc,
+                'for train data and',
+                test_MAPE_acc,
+                'for test data')
+
             # Xs and ys are visible in the scope
             print('Prediction accuracy (R^2) for', model,
                   'is', model.get_score(X_train, y_train))
