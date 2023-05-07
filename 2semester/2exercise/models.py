@@ -1,7 +1,8 @@
 from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error, mean_squared_error
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import make_pipeline, Pipeline
+from sklearn.model_selection import GridSearchCV
 
 import data_provider
 
@@ -49,6 +50,27 @@ class LinearPipiliner(Model):
                 LinearRegression()).fit(X, y))
 
 
+class GridSearcher(Model):
+    def __init__(
+            self,
+            X,
+            y,
+            description='Polynomial linear regression model optimized with grid search',
+            params={}):
+        pipe = Pipeline([('sc', StandardScaler()), ('pf',
+                        PolynomialFeatures()), ('lr', LinearRegression())])
+        Model.__init__(
+            self,
+            description,
+            model=GridSearchCV(
+                pipe,
+                param_grid=params,
+                n_jobs=-1,
+                verbose=2).fit(
+                X,
+                y))
+
+
 if __name__ == '__main__':
     def printAccuracy(models, predictions):
         print('~' * 100)
@@ -83,7 +105,7 @@ if __name__ == '__main__':
             train_RMSE_acc = mean_squared_error(y_train, train_E)
             test_RMSE_acc = mean_squared_error(y_test, prediction)
             print(
-                'Mean absolute percentage errors for',
+                'Mean squared errors for',
                 model,
                 'are',
                 train_RMSE_acc,
@@ -151,7 +173,7 @@ if __name__ == '__main__':
             y_pred_rdg_cal_alpha10,
             y_pred_rdg_cal_alpha100))
 
-    # Plynomial stuff + linear regression
+    # Polynomial stuff + linear regression
     lrm_cal_pol = LinearPipiliner(
         X_train,
         y_train,
@@ -162,6 +184,20 @@ if __name__ == '__main__':
             lrm_cal_pol,),
         predictions=(
             y_pred_cal_pol,))
+
+    # Grid search
+    params = {'lr__fit_intercept': [True, False], 'pf__degree': [2, 3, 4]}
+
+    lrm_cal_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='linear regression model <<polynomized>> for California housing prices with grid search')
+    y_pred_cal_grid = lrm_cal_grid.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lrm_cal_grid,),
+        predictions=(
+            y_pred_cal_grid,))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getGoogleShareXy()
@@ -218,7 +254,7 @@ if __name__ == '__main__':
             y_pred_rdg_gog_alpha10,
             y_pred_rdg_gog_alpha100))
 
-    # Plynomial stuff + linear regression
+    # Polynomial stuff + linear regression
     lrm_gog_pol = LinearPipiliner(
         X_train,
         y_train,
@@ -229,3 +265,15 @@ if __name__ == '__main__':
             lrm_gog_pol,),
         predictions=(
             y_pred_gog_pol,))
+
+    # Grid search
+    lrm_gog_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='linear regression model <<polynomized>> for Google share prices with grid search')
+    y_pred_gog_grid = lrm_gog_grid.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lrm_gog_grid,),
+        predictions=(
+            y_pred_gog_grid,))
