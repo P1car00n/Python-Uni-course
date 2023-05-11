@@ -85,17 +85,48 @@ if __name__ == '__main__':
 
     # moons
     # Simple logistic regression
-    lrm_moon_simple = LGM(
+    lgm_moon_simple = LGM(
         X_train,
         y_train,
         description='logistic regression model with liblinear solver for the moons dataset',
         solver='liblinear')
-    y_pred_lgm_moon_simple = lrm_moon_simple.get_prediction(X_test)
+    y_pred_lgm_moon_simple = lgm_moon_simple.get_prediction(X_test)
     printAccuracy(
         models=(
-            lrm_moon_simple,),
+            lgm_moon_simple,),
         predictions=(
             y_pred_lgm_moon_simple,))
+
+    # Multinomial logistic regression
+    lgm_moon_multi = LGM(
+        X_train,
+        y_train,
+        description='logistic regression model with multinomial solver for the moons dataset',
+        solver='lbfgs',
+        multi_class='multinomial',
+        n_jobs=-1)
+    y_pred_lgm_moon_multi = lgm_moon_multi.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_moon_multi,),
+        predictions=(
+            y_pred_lgm_moon_multi,))
+
+    lgm_moon_multi_no_penalty = LGM(
+        X_train,
+        y_train,
+        description='no penalty logistic regression model with multinomial solver for the moons dataset',
+        solver='lbfgs',
+        multi_class='multinomial',
+        n_jobs=-1,
+        penalty=None)
+    y_pred_lgm_moon_multi_no_penalty = lgm_moon_multi_no_penalty.get_prediction(
+        X_test)
+    printAccuracy(
+        models=(
+            lgm_moon_multi_no_penalty,),
+        predictions=(
+            y_pred_lgm_moon_multi_no_penalty,))
 
     # digits
     # Simple logistic regression
@@ -110,3 +141,34 @@ if __name__ == '__main__':
             lgm_digits_simple,),
         predictions=(
             y_pred_lgm_digits_simple,))
+
+    # Multinomial logistic regression
+    lgm_digit_multi = LGM(
+        X_train,
+        y_train,
+        description='logistic regression model with multinomial solver for the digits dataset',
+        solver='lbfgs',
+        multi_class='multinomial',
+        n_jobs=-1)
+    y_pred_lgm_digit_multi = lgm_digit_multi.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_digit_multi,),
+        predictions=(
+            y_pred_lgm_digit_multi,))
+
+    lgm_digit_multi_no_penalty = LGM(
+        X_train,
+        y_train,
+        description='no penalty logistic regression model with multinomial solver for the digits dataset',
+        solver='lbfgs',
+        multi_class='multinomial',
+        n_jobs=-1,
+        penalty=None)
+    y_pred_lgm_digit_multi_no_penalty = lgm_digit_multi_no_penalty.get_prediction(
+        X_test)
+    printAccuracy(
+        models=(
+            lgm_digit_multi_no_penalty,),
+        predictions=(
+            y_pred_lgm_digit_multi_no_penalty,))
