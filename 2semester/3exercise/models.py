@@ -14,6 +14,9 @@ class Model:
     def get_prediction(self, samples):
         return self.model.predict(samples)
 
+    def get_prediction_proba(self, samples):
+        return self.model.predict_proba(samples)
+
     def get_score(self, X, y):
         return self.model.score(X, y)
 
@@ -96,6 +99,14 @@ if __name__ == '__main__':
                 'for train data and',
                 test_RMSE_acc,
                 'for test data')
+
+            # predict_proba
+            train_proba = model.get_prediction_proba(X_train[:2, :])
+            print(
+                'Posterior probability estimates for',
+                model,
+                'are as follows: \n',
+                train_proba)
 
             # Xs and ys are visible in the scope
             print('Prediction accuracy (R^2) for', model,
