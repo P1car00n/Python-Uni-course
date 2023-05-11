@@ -1,5 +1,6 @@
 from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error, mean_squared_error
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
 
 import data_provider
 
@@ -30,6 +31,28 @@ class LGM(Model):
             **kwargs):
         Model.__init__(self, description,
                        model=LogisticRegression(**kwargs).fit(X, y))
+
+
+class GridSearcher(Model):
+    def __init__(
+            self,
+            X,
+            y,
+            description='Grid search',
+            params={}):
+        Model.__init__(
+            self,
+            description,
+            model=GridSearchCV(
+                LogisticRegression(
+                    solver='lbfgs',
+                    multi_class='multinomial',
+                    n_jobs=-1),
+                param_grid=params,
+                n_jobs=-1,
+                verbose=2).fit(
+                X,
+                y))
 
 
 if __name__ == '__main__':
@@ -128,6 +151,24 @@ if __name__ == '__main__':
         predictions=(
             y_pred_lgm_moon_multi_no_penalty,))
 
+    # grid search for multinomial logistic regression
+    params = {'max_iter': (100, 200, 500, 1000)}
+
+    lgm_moon_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='grid search logistic regression model with multinomial solver for the moons dataset',
+        params=params)
+    y_pred_moon_grid = lgm_moon_grid.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_moon_grid,),
+        predictions=(
+            y_pred_moon_grid,))
+
+    # reinitialize Xs and ys
+    X_train, X_test, y_train, y_test = data_provider.getDigitsXy()
+
     # digits
     # Simple logistic regression
     lgm_digits_simple = LGM(
@@ -172,3 +213,18 @@ if __name__ == '__main__':
             lgm_digit_multi_no_penalty,),
         predictions=(
             y_pred_lgm_digit_multi_no_penalty,))
+
+    # grid search for multinomial logistic regression
+    # as above --> params = {'max_iter': (100, 200, 500, 1000)}
+
+    lgm_digit_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='grid search logistic regression model with multinomial solver for the digits dataset',
+        params=params)
+    y_pred_moon_grid = lgm_digit_grid.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_digit_grid,),
+        predictions=(
+            y_pred_moon_grid,))
