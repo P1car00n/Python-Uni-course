@@ -191,7 +191,8 @@ if __name__ == '__main__':
     lrm_cal_grid = GridSearcher(
         X_train,
         y_train,
-        description='linear regression model <<polynomized>> for California housing prices with grid search')
+        description='linear regression model <<polynomized>> for California housing prices with grid search',
+        params=params)
     y_pred_cal_grid = lrm_cal_grid.get_prediction(X_test)
     printAccuracy(
         models=(
@@ -270,7 +271,8 @@ if __name__ == '__main__':
     lrm_gog_grid = GridSearcher(
         X_train,
         y_train,
-        description='linear regression model <<polynomized>> for Google share prices with grid search')
+        description='linear regression model <<polynomized>> for Google share prices with grid search',
+        params=params)
     y_pred_gog_grid = lrm_gog_grid.get_prediction(X_test)
     printAccuracy(
         models=(
