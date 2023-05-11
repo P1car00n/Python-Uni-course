@@ -140,11 +140,6 @@ if __name__ == '__main__':
         multi_class='multinomial',
         n_jobs=-1)
     y_pred_lgm_moon_multi = lgm_moon_multi.get_prediction(X_test)
-    printAccuracy(
-        models=(
-            lgm_moon_multi,),
-        predictions=(
-            y_pred_lgm_moon_multi,))
 
     lgm_moon_multi_no_penalty = LGM(
         X_train,
@@ -158,9 +153,11 @@ if __name__ == '__main__':
         X_test)
     printAccuracy(
         models=(
-            lgm_moon_multi_no_penalty,),
+            lgm_moon_multi,
+            lgm_moon_multi_no_penalty),
         predictions=(
-            y_pred_lgm_moon_multi_no_penalty,))
+            y_pred_lgm_moon_multi,
+            y_pred_lgm_moon_multi_no_penalty))
 
     # grid search for multinomial logistic regression
     params = {'max_iter': (100, 200, 500, 1000)}
@@ -188,11 +185,6 @@ if __name__ == '__main__':
         description='logistic regression model with liblinear solver for the digits dataset',
         solver='liblinear')
     y_pred_lgm_digits_simple = lgm_digits_simple.get_prediction(X_test)
-    printAccuracy(
-        models=(
-            lgm_digits_simple,),
-        predictions=(
-            y_pred_lgm_digits_simple,))
 
     # Multinomial logistic regression
     lgm_digit_multi = LGM(
@@ -205,9 +197,11 @@ if __name__ == '__main__':
     y_pred_lgm_digit_multi = lgm_digit_multi.get_prediction(X_test)
     printAccuracy(
         models=(
-            lgm_digit_multi,),
+            lgm_digits_simple,
+            lgm_digit_multi),
         predictions=(
-            y_pred_lgm_digit_multi,))
+            y_pred_lgm_digits_simple,
+            y_pred_lgm_digit_multi))
 
     lgm_digit_multi_no_penalty = LGM(
         X_train,
@@ -233,9 +227,9 @@ if __name__ == '__main__':
         y_train,
         description='grid search logistic regression model with multinomial solver for the digits dataset',
         params=params)
-    y_pred_moon_grid = lgm_digit_grid.get_prediction(X_test)
+    y_pred_digit_grid = lgm_digit_grid.get_prediction(X_test)
     printAccuracy(
         models=(
             lgm_digit_grid,),
         predictions=(
-            y_pred_moon_grid,))
+            y_pred_digit_grid,))
