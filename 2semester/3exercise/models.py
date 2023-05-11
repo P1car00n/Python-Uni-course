@@ -81,4 +81,32 @@ if __name__ == '__main__':
                   model, 'is', r2_score(y_test, prediction))
 
     # set Xs and ys
-    X_train, X_test, y_train, y_test = data_provider.getCaliforniaXy()
+    X_train, X_test, y_train, y_test = data_provider.getMoonsXy()
+
+    # moons
+    # Simple logistic regression
+    lrm_moon_simple = LGM(
+        X_train,
+        y_train,
+        description='logistic regression model with liblinear solver for the moons dataset',
+        solver='liblinear')
+    y_pred_lgm_moon_simple = lrm_moon_simple.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lrm_moon_simple,),
+        predictions=(
+            y_pred_lgm_moon_simple,))
+
+    # digits
+    # Simple logistic regression
+    lgm_digits_simple = LGM(
+        X_train,
+        y_train,
+        description='logistic regression model with liblinear solver for the digits dataset',
+        solver='liblinear')
+    y_pred_lgm_digits_simple = lgm_digits_simple.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_digits_simple,),
+        predictions=(
+            y_pred_lgm_digits_simple,))
