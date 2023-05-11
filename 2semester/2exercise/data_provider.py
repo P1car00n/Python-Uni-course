@@ -14,11 +14,11 @@ def getGoogleShareXy():
     # setting thousands since there are numbers like 1,000,111 in the dataset;
     # likewise for dates
     dataset_train = pd.read_csv(
-        '/home/arthur/Uni/lab2/data/Google_Stock_Price_Train.csv',
+        input('Path to the train dataset: '),
         thousands=',',
-        date_format='%m/%d/%Y')  # TODO: input()
+        date_format='%m/%d/%Y')
     dataset_test = pd.read_csv(
-        '/home/arthur/Uni/lab2/data/Google_Stock_Price_Test.csv',
+        input('Path to the test dataset: '),
         thousands=',',
         date_format='%m/%d/%Y')
 
