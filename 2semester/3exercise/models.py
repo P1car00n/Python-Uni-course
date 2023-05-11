@@ -185,6 +185,11 @@ if __name__ == '__main__':
         description='logistic regression model with liblinear solver for the digits dataset',
         solver='liblinear')
     y_pred_lgm_digits_simple = lgm_digits_simple.get_prediction(X_test)
+    printAccuracy(
+        models=(
+            lgm_digits_simple,),
+        predictions=(
+            y_pred_lgm_digits_simple,))
 
     # Multinomial logistic regression
     lgm_digit_multi = LGM(
@@ -195,13 +200,6 @@ if __name__ == '__main__':
         multi_class='multinomial',
         n_jobs=-1)
     y_pred_lgm_digit_multi = lgm_digit_multi.get_prediction(X_test)
-    printAccuracy(
-        models=(
-            lgm_digits_simple,
-            lgm_digit_multi),
-        predictions=(
-            y_pred_lgm_digits_simple,
-            y_pred_lgm_digit_multi))
 
     lgm_digit_multi_no_penalty = LGM(
         X_train,
@@ -215,9 +213,11 @@ if __name__ == '__main__':
         X_test)
     printAccuracy(
         models=(
-            lgm_digit_multi_no_penalty,),
+            lgm_digit_multi,
+            lgm_digit_multi_no_penalty),
         predictions=(
-            y_pred_lgm_digit_multi_no_penalty,))
+            y_pred_lgm_digits_simple,
+            y_pred_lgm_digit_multi_no_penalty))
 
     # grid search for multinomial logistic regression
     # as above --> params = {'max_iter': (100, 200, 500, 1000)}
