@@ -115,7 +115,7 @@ if __name__ == '__main__':
     #            'for test data')
 #
             # predict_proba
-            train_proba = model.get_prediction_proba(X[:2, :])
+            train_proba = model.get_prediction_proba(X_train[:2, :])
             print(
                 'Posterior probability estimates for',
                 model,
@@ -129,35 +129,38 @@ if __name__ == '__main__':
     #              model, 'is', r2_score(y_test, prediction))
 
     # set Xs and ys
-    X, y = data_provider.getBlobsXy()
+    X_train, X_test, y_train, y_test = data_provider.getBlobsXy()
 
     # Naive Bayes
-    # Gaussian
-    gnb_blob = GNB(X, y, description='Gaussian Naive Bayes for the blobs dataset')
-    y_pred_gnb_blob = gnb_blob.get_prediction(X)
+    # Blobs
+    gnb_blob = GNB(X_train, y_train, description='Gaussian Naive Bayes for the blobs dataset')
+    y_pred_gnb_blob = gnb_blob.get_prediction(X_test)
 
-    gnb_circle = GNB(X, y, description='Gaussian Naive Bayes for the circle dataset')
-    y_pred_gnb_circle = gnb_circle.get_prediction(X)
+    mnb_blob = MNB(X_train, y_train, description='multinomial Naive Bayes classifier for the blobs dataset')
+    y_pred_mnb_blob = mnb_blob.get_prediction(X_test)
     printAccuracy(
         models=(
             gnb_blob,
-            gnb_circle),
+            mnb_blob),
         predictions=(
             y_pred_gnb_blob,
-            y_pred_gnb_circle))
+            y_pred_mnb_blob))
+    
+    # reinitialize Xs and ys
+    X_train, X_test, y_train, y_test = data_provider.getCirclesXy()
 
-    # Multinomial
-    mnb_blob = MNB(X, y, description='multinomial Naive Bayes classifier for the blobs dataset')
-    y_pred_mnb_blob = mnb_blob.get_prediction(X)
+    # Circles
+    gnb_circle = GNB(X_train, y_train, description='Gaussian Naive Bayes for the circle dataset')
+    y_pred_gnb_circle = gnb_circle.get_prediction(X_test)
 
-    mnb_circle = MNB(X, y, description='multinomial Naive Bayes classifier for the circle dataset')
-    y_pred_mnb_circle = mnb_circle.get_prediction(X)
+    mnb_circle = MNB(X_train, y_train, description='multinomial Naive Bayes classifier for the circle dataset')
+    y_pred_mnb_circle = mnb_circle.get_prediction(X_test)
     printAccuracy(
         models=(
-            mnb_blob,
+            gnb_circle,
             mnb_circle),
         predictions=(
-            y_pred_mnb_blob,
+            y_pred_gnb_circle,
             y_pred_mnb_circle))
 
     #lgm_moon_multi_no_penalty = LGM(
