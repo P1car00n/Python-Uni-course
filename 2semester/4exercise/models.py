@@ -176,7 +176,7 @@ if __name__ == '__main__':
     mnb_blob = MNB(
         X_train,
         y_train,
-        description='multinomial Naive Bayes classifier for the blobs dataset')
+        description='Multinomial Naive Bayes classifier for the blobs dataset')
     y_pred_mnb_blob = mnb_blob.get_prediction(X_test)
     printAccuracyBayes(
         models=(
@@ -199,7 +199,7 @@ if __name__ == '__main__':
     mnb_circle = MNB(
         X_train,
         y_train,
-        description='multinomial Naive Bayes classifier for the circle dataset')
+        description='Multinomial Naive Bayes classifier for the circle dataset')
     y_pred_mnb_circle = mnb_circle.get_prediction(X_test)
     printAccuracyBayes(
         models=(
@@ -221,21 +221,31 @@ if __name__ == '__main__':
         C=1.0)
     y_pred_lsvc_moon = lsvc_moon.get_prediction(X_test)
 
-    csvc_moon = CSVC(
+    csvc_linear_moon = CSVC(
         X_train,
         y_train,
-        description='C-Support Vector Classification for the moons dataset',
+        description='C-Support Linear Vector Classification for the moons dataset',
         C=1.0,
         kernel='linear')
-    y_pred_csvc_moon = csvc_moon.get_prediction(X_test)
+    y_pred_csvc_linear_moon = csvc_linear_moon.get_prediction(X_test)
+
+    csvc_poly_moon = CSVC(
+        X_train,
+        y_train,
+        description='C-Support Multinomial Vector Classification for the moons dataset',
+        C=1.0,
+        kernel='poly')
+    y_pred_csvc_poly_moon = csvc_poly_moon.get_prediction(X_test)
 
     printAccuracySVN(
         models=(
             lsvc_moon,
-            csvc_moon),
+            csvc_linear_moon,
+            csvc_poly_moon),
         predictions=(
             y_pred_lsvc_moon,
-            y_pred_csvc_moon))
+            y_pred_csvc_linear_moon,
+            y_pred_csvc_poly_moon))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCovtypesXy()
@@ -256,13 +266,23 @@ if __name__ == '__main__':
         kernel='linear')
     y_pred_csvc_covtype = csvc_covtype.get_prediction(X_test)
 
+    csvc_poly_covtype = CSVC(
+        X_train,
+        y_train,
+        description='C-Support Multinomial Vector Classification for the covertypes dataset',
+        C=1.0,
+        kernel='poly')
+    y_pred_csvc_poly_covtype = csvc_poly_covtype.get_prediction(X_test)
+
     printAccuracySVN(
         models=(
             lsvc_covtype,
-            csvc_covtype),
+            csvc_covtype,
+            csvc_poly_covtype),
         predictions=(
             y_pred_lsvc_covtype,
-            y_pred_csvc_covtype))
+            y_pred_csvc_covtype,
+            y_pred_csvc_poly_covtype))
 
 #
     # grid search for multinomial logistic regression
