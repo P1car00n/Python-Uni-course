@@ -241,84 +241,29 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = data_provider.getCovtypesXy()
 
     # Covertypes
+    lsvc_covtype = LSVC(
+        X_train,
+        y_train,
+        description='Linear Support Vector Classification for the covertypes dataset',
+        C=1.0)
+    y_pred_lsvc_covtype = lsvc_covtype.get_prediction(X_test)
 
-    # lgm_moon_multi_no_penalty = LGM(
-    #    X_train,
-    #    y_train,
-    #    description='no penalty logistic regression model with multinomial solver for the moons dataset',
-    #    solver='lbfgs',
-    #    multi_class='multinomial',
-    #    n_jobs=-1,
-    #    penalty=None)
-    # y_pred_lgm_moon_multi_no_penalty = lgm_moon_multi_no_penalty.get_prediction(
-    #    X_test)
-    # printAccuracy(
-    #    models=(
-    #        lgm_moon_multi,
-    #        lgm_moon_multi_no_penalty),
-    #    predictions=(
-    #        y_pred_lgm_moon_multi,
-    #        y_pred_lgm_moon_multi_no_penalty))
-#
-    # grid search for multinomial logistic regression
-    # params = {'max_iter': (100, 200, 500, 1000)}
-#
-    # lgm_moon_grid = GridSearcher(
-    #    X_train,
-    #    y_train,
-    #    description='grid search logistic regression model with multinomial solver for the moons dataset',
-    #    params=params)
-    # y_pred_moon_grid = lgm_moon_grid.get_prediction(X_test)
-    # printAccuracy(
-    #    models=(
-    #        lgm_moon_grid,),
-    #    predictions=(
-    #        y_pred_moon_grid,))
+    csvc_covtype = CSVC(
+        X_train,
+        y_train,
+        description='C-Support Vector Classification for the covertypes dataset',
+        C=1.0,
+        kernel='linear')
+    y_pred_csvc_covtype = csvc_covtype.get_prediction(X_test)
 
-    # reinitialize Xs and ys
-    # X_train, X_test, y_train, y_test = data_provider.getDigitsXy()
-#
-    # digits
-    # Simple logistic regression
-    # lgm_digits_simple = LGM(
-    #    X_train,
-    #    y_train,
-    #    description='logistic regression model with liblinear solver for the digits dataset',
-    #    solver='liblinear')
-    # y_pred_lgm_digits_simple = lgm_digits_simple.get_prediction(X_test)
-    # printAccuracy(
-    #    models=(
-    #        lgm_digits_simple,),
-    #    predictions=(
-    #        y_pred_lgm_digits_simple,))
-#
-    # Multinomial logistic regression
-    # lgm_digit_multi = LGM(
-    #    X_train,
-    #    y_train,
-    #    description='logistic regression model with multinomial solver for the digits dataset',
-    #    solver='lbfgs',
-    #    multi_class='multinomial',
-    #    n_jobs=-1)
-    # y_pred_lgm_digit_multi = lgm_digit_multi.get_prediction(X_test)
-#
-    # lgm_digit_multi_no_penalty = LGM(
-    #    X_train,
-    #    y_train,
-    #    description='no penalty logistic regression model with multinomial solver for the digits dataset',
-    #    solver='lbfgs',
-    #    multi_class='multinomial',
-    #    n_jobs=-1,
-    #    penalty=None)
-    # y_pred_lgm_digit_multi_no_penalty = lgm_digit_multi_no_penalty.get_prediction(
-    #    X_test)
-    # printAccuracy(
-    #    models=(
-    #        lgm_digit_multi,
-    #        lgm_digit_multi_no_penalty),
-    #    predictions=(
-    #        y_pred_lgm_digits_simple,
-    #        y_pred_lgm_digit_multi_no_penalty))
+    printAccuracySVN(
+        models=(
+            lsvc_covtype,
+            csvc_covtype),
+        predictions=(
+            y_pred_lsvc_covtype,
+            y_pred_csvc_covtype))
+
 #
     # grid search for multinomial logistic regression
     # as above --> params = {'max_iter': (100, 200, 500, 1000)}
