@@ -1,4 +1,4 @@
-from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score
+from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
@@ -113,7 +113,6 @@ if __name__ == '__main__':
                 model,
                 'are as follows: \n',
                 train_proba)
-            
 
     def printAccuracySVN(models, predictions):
         print('~' * 100)
@@ -131,13 +130,13 @@ if __name__ == '__main__':
                 'for train data and \n',
                 test_CM_acc,
                 'for test data')
-            
+
             # Xs and ys are visible in the scope
             print('Prediction accuracy (for', model,
                   'is', model.get_score(X_train, y_train))
             print('Prediction accuracy (R^2) of y_test for',
                   model, 'is', r2_score(y_test, prediction))
-            
+
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
             test_RC_acc = recall_score(y_test, prediction)
@@ -149,7 +148,7 @@ if __name__ == '__main__':
                 'for train data and',
                 test_RC_acc,
                 'for test data')
-            
+
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
             test_RC_acc = recall_score(y_test, prediction)
@@ -161,7 +160,7 @@ if __name__ == '__main__':
                 'for train data and',
                 test_RC_acc,
                 'for test data')
-            
+
             # f1 score
             train_F1_acc = f1_score(y_train, train_E)
             test_F1_acc = f1_score(y_test, prediction)
@@ -172,6 +171,18 @@ if __name__ == '__main__':
                 train_F1_acc,
                 'for train data and',
                 test_F1_acc,
+                'for test data')
+
+            # precision recall curve
+            train_PRC_acc = precision_recall_curve(y_train, train_E)
+            test_PRC_acc = precision_recall_curve(y_test, prediction)
+            print(
+                'Recall scores for',
+                model,
+                'are \n',
+                train_PRC_acc,
+                'for train data and \n',
+                test_RC_acc,
                 'for test data')
 
     # set Xs and ys
