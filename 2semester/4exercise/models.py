@@ -1,4 +1,4 @@
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
@@ -105,21 +105,7 @@ if __name__ == '__main__':
     def printAccuracyBayes(models, predictions):
         print('~' * 100)
         for (model, prediction) in zip(models, predictions):
-            #        train_E = model.get_prediction(X_train)
-            #
-            #
-            #        # RMSE
-            #        train_RMSE_acc = mean_squared_error(y_train, train_E)
-            #        test_RMSE_acc = mean_squared_error(y_test, prediction)
-            #        print(
-            #            'Mean squared errors for',
-            #            model,
-            #            'are',
-            #            train_RMSE_acc,
-            #            'for train data and',
-            #            test_RMSE_acc,
-            #            'for test data')
-            #
+
             # predict_proba
             train_proba = model.get_prediction_proba(X_train[:2, :])
             print(
@@ -127,12 +113,7 @@ if __name__ == '__main__':
                 model,
                 'are as follows: \n',
                 train_proba)
-#
-    #        # Xs and ys are visible in the scope
-    #        print('Prediction accuracy (R^2) for', model,
-    #              'is', model.get_score(X_train, y_train))
-    #        print('Prediction accuracy (R^2) of y_test for',
-    #              model, 'is', r2_score(y_test, prediction))
+            
 
     def printAccuracySVN(models, predictions):
         print('~' * 100)
@@ -145,10 +126,40 @@ if __name__ == '__main__':
             print(
                 'Confusion matrices for',
                 model,
-                'are',
+                'are \n',
                 train_CM_acc,
-                'for train data and',
+                'for train data and \n',
                 test_CM_acc,
+                'for test data')
+            
+            # Xs and ys are visible in the scope
+            print('Prediction accuracy (for', model,
+                  'is', model.get_score(X_train, y_train))
+            print('Prediction accuracy (R^2) of y_test for',
+                  model, 'is', r2_score(y_test, prediction))
+            
+            # recall score
+            train_RC_acc = recall_score(y_train, train_E)
+            test_RC_acc = recall_score(y_test, prediction)
+            print(
+                'Recall scores for',
+                model,
+                'are',
+                train_RC_acc,
+                'for train data and',
+                test_RC_acc,
+                'for test data')
+            
+            # recall score
+            train_RC_acc = recall_score(y_train, train_E)
+            test_RC_acc = recall_score(y_test, prediction)
+            print(
+                'Recall scores for',
+                model,
+                'are',
+                train_RC_acc,
+                'for train data and',
+                test_RC_acc,
                 'for test data')
 
     # set Xs and ys
