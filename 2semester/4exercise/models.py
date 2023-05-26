@@ -1,4 +1,4 @@
-from sklearn.metrics import r2_score, mean_absolute_error, mean_absolute_percentage_error, mean_squared_error
+from sklearn.metrics import confusion_matrix
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
@@ -107,29 +107,6 @@ if __name__ == '__main__':
         for (model, prediction) in zip(models, predictions):
             #        train_E = model.get_prediction(X_train)
             #
-            #        # MAE
-            #        train_MAE_acc = mean_absolute_error(y_train, train_E)
-            #        test_MAE_acc = mean_absolute_error(y_test, prediction)
-            #        print(
-            #            'Mean absolute errors for',
-            #            model,
-            #            'are',
-            #            train_MAE_acc,
-            #            'for train data and',
-            #            test_MAE_acc,
-            #            'for test data')
-            #
-            #        # MAPE
-            #        train_MAPE_acc = mean_absolute_percentage_error(y_train, train_E)
-            #        test_MAPE_acc = mean_absolute_percentage_error(y_test, prediction)
-            #        print(
-            #            'Mean absolute percentage errors for',
-            #            model,
-            #            'are',
-            #            train_MAPE_acc,
-            #            'for train data and',
-            #            test_MAPE_acc,
-            #            'for test data')
             #
             #        # RMSE
             #        train_RMSE_acc = mean_squared_error(y_train, train_E)
@@ -160,7 +137,19 @@ if __name__ == '__main__':
     def printAccuracySVN(models, predictions):
         print('~' * 100)
         for (model, prediction) in zip(models, predictions):
-            pass
+            train_E = model.get_prediction(X_train)
+
+            # confusion matrix
+            train_CM_acc = confusion_matrix(y_train, train_E)
+            test_CM_acc = confusion_matrix(y_test, prediction)
+            print(
+                'Confusion matrices for',
+                model,
+                'are',
+                train_CM_acc,
+                'for train data and',
+                test_CM_acc,
+                'for test data')
 
     # set Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getBlobsXy()
