@@ -113,7 +113,7 @@ if __name__ == '__main__':
                 model,
                 'are as follows: \n',
                 train_proba)
-            
+
         # temporary workaround
         printAccuracySVN(models, predictions)
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                 'for train data and \n',
                 test_ROC_acc,
                 'for test data')
-            
+
             # ROC AUC
             train_ROCAUC_acc = roc_auc_score(y_train, train_E)
             test_ROCAUC_acc = roc_auc_score(y_test, prediction)
@@ -300,7 +300,7 @@ if __name__ == '__main__':
             y_pred_csvc_linear_moon,
             y_pred_csvc_poly_moon,
             y_pred_moon_grid))
-    
+
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCovtypesXy()
 
@@ -309,7 +309,8 @@ if __name__ == '__main__':
         X_train,
         y_train,
         description='Linear Support Vector Classification for the covertypes dataset',
-        C=1.0)
+        C=1.0,
+        max_iter=10000)
     y_pred_lsvc_covtype = lsvc_covtype.get_prediction(X_test)
 
     csvc_covtype = CSVC(
@@ -317,7 +318,8 @@ if __name__ == '__main__':
         y_train,
         description='C-Support Vector Classification for the covertypes dataset',
         C=1.0,
-        kernel='linear')
+        kernel='linear',
+        max_iter=10000)
     y_pred_csvc_covtype = csvc_covtype.get_prediction(X_test)
 
     csvc_poly_covtype = CSVC(
@@ -325,11 +327,12 @@ if __name__ == '__main__':
         y_train,
         description='C-Support Multinomial Vector Classification for the covertypes dataset',
         C=1.0,
-        kernel='poly')
+        kernel='poly',
+        max_iter=10000)
     y_pred_csvc_poly_covtype = csvc_poly_covtype.get_prediction(X_test)
 
     # grid search for multinomial Vector Classification
-    # as above --> params = {'max_iter': (100, 200, 500, 1000)}
+    # as above --> params
     csvc_poly_covtype_grid = GridSearcher(
         X_train,
         y_train,
