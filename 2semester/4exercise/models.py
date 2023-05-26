@@ -161,6 +161,18 @@ if __name__ == '__main__':
                 'for train data and',
                 test_RC_acc,
                 'for test data')
+            
+            # f1 score
+            train_F1_acc = f1_score(y_train, train_E)
+            test_F1_acc = f1_score(y_test, prediction)
+            print(
+                'F1 scores for',
+                model,
+                'are',
+                train_F1_acc,
+                'for train data and',
+                test_F1_acc,
+                'for test data')
 
     # set Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getBlobsXy()
