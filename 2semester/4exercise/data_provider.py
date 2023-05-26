@@ -29,9 +29,8 @@ def getMoonsXy(test_size=0.2):
 
 
 def getCovtypesXy(test_size=0.2):
-    # TODO: replace with input()
     X, y = fetch_covtype(
-        data_home='/home/arthur/Developing/Python-Uni-course/2semester/4exercise/data', return_X_y=True)
+        data_home=input('Path where to download covtypes: '), return_X_y=True)
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size)
     return X_train, X_test, y_train, y_test
