@@ -1,4 +1,4 @@
-from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve, roc_curve
+from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve, roc_curve, roc_auc_score
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
@@ -113,6 +113,9 @@ if __name__ == '__main__':
                 model,
                 'are as follows: \n',
                 train_proba)
+            
+        # temporary workaround
+        printAccuracySVN(models, predictions)
 
     def printAccuracySVN(models, predictions):
         print('~' * 100)
@@ -132,9 +135,9 @@ if __name__ == '__main__':
                 'for test data')
 
             # Xs and ys are visible in the scope
-            print('Prediction accuracy (for', model,
+            print('Prediction accuracy for', model,
                   'is', model.get_score(X_train, y_train))
-            print('Prediction accuracy (R^2) of y_test for',
+            print('Prediction accuracy of y_test for',
                   model, 'is', r2_score(y_test, prediction))
 
             # recall score
@@ -183,6 +186,18 @@ if __name__ == '__main__':
                 train_ROC_acc,
                 'for train data and \n',
                 test_ROC_acc,
+                'for test data')
+            
+            # ROC AUC
+            train_ROCAUC_acc = roc_auc_score(y_train, train_E)
+            test_ROCAUC_acc = roc_auc_score(y_test, prediction)
+            print(
+                'Area Under the Receiver Operating Characteristic Curve for',
+                model,
+                'are \n',
+                train_ROCAUC_acc,
+                'for train data and \n',
+                test_ROCAUC_acc,
                 'for test data')
 
     # set Xs and ys
@@ -285,7 +300,7 @@ if __name__ == '__main__':
             y_pred_csvc_linear_moon,
             y_pred_csvc_poly_moon,
             y_pred_moon_grid))
-
+    
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCovtypesXy()
 
