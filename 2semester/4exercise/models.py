@@ -1,4 +1,4 @@
-from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve
+from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve, roc_curve
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
@@ -177,12 +177,24 @@ if __name__ == '__main__':
             train_PRC_acc = precision_recall_curve(y_train, train_E)
             test_PRC_acc = precision_recall_curve(y_test, prediction)
             print(
-                'Recall scores for',
+                'Precision recall curves for',
                 model,
                 'are \n',
                 train_PRC_acc,
                 'for train data and \n',
-                test_RC_acc,
+                test_PRC_acc,
+                'for test data')
+
+            # ROC curve
+            train_ROC_acc = roc_curve(y_train, train_E)
+            test_ROC_acc = roc_curve(y_test, prediction)
+            print(
+                'ROC curves for',
+                model,
+                'are \n',
+                train_ROC_acc,
+                'for train data and \n',
+                test_ROC_acc,
                 'for test data')
 
     # set Xs and ys
