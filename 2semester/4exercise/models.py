@@ -3,6 +3,7 @@ from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import GridSearchCV
 
 import data_provider
 
@@ -80,26 +81,25 @@ class LSVC(Model):
                            LinearSVC(**kwargs)).fit(X, y))
 
 
-# class GridSearcher(Model):
-#    def __init__(
-#            self,
-#            X,
-#            y,
-#            description='Grid search',
-#            params={}):
-#        Model.__init__(
-#            self,
-#            description,
-#            model=GridSearchCV(
-#                LogisticRegression(
-#                    solver='lbfgs',
-#                    multi_class='multinomial',
-#                    n_jobs=-1),
-#                param_grid=params,
-#                n_jobs=-1,
-#                verbose=2).fit(
-#                X,
-#                y))
+class GridSearcher(Model):
+    def __init__(
+            self,
+            X,
+            y,
+            description='Grid search',
+            params={}):
+        Model.__init__(
+            self,
+            description,
+            model=GridSearchCV(
+                SVC(
+                    kernel='poly'),
+                param_grid=params,
+                n_jobs=-1,
+                verbose=2).fit(
+                X,
+                y))
+
 
 if __name__ == '__main__':
     def printAccuracyBayes(models, predictions):
@@ -136,18 +136,6 @@ if __name__ == '__main__':
                   'is', model.get_score(X_train, y_train))
             print('Prediction accuracy (R^2) of y_test for',
                   model, 'is', r2_score(y_test, prediction))
-
-            # recall score
-            train_RC_acc = recall_score(y_train, train_E)
-            test_RC_acc = recall_score(y_test, prediction)
-            print(
-                'Recall scores for',
-                model,
-                'are',
-                train_RC_acc,
-                'for train data and',
-                test_RC_acc,
-                'for test data')
 
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
@@ -272,15 +260,31 @@ if __name__ == '__main__':
         kernel='poly')
     y_pred_csvc_poly_moon = csvc_poly_moon.get_prediction(X_test)
 
+    # grid search for multinomial Vector Classification
+    params = {
+        'C': (
+            1.0, 2.0, 5.0, 10.0), 'degree': (
+            3, 6, 9, 12), 'coef0': (
+                0.0, 2.0, 5.0, 10.0), 'probability': (
+                    False, True)}
+    csvc_poly_moon_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='grid search C-Support Multinomial Vector Classification for the moons dataset',
+        params=params)
+    y_pred_moon_grid = csvc_poly_moon_grid.get_prediction(X_test)
+
     printAccuracySVN(
         models=(
             lsvc_moon,
             csvc_linear_moon,
-            csvc_poly_moon),
+            csvc_poly_moon,
+            csvc_poly_moon_grid),
         predictions=(
             y_pred_lsvc_moon,
             y_pred_csvc_linear_moon,
-            y_pred_csvc_poly_moon))
+            y_pred_csvc_poly_moon,
+            y_pred_moon_grid))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getCovtypesXy()
@@ -309,28 +313,23 @@ if __name__ == '__main__':
         kernel='poly')
     y_pred_csvc_poly_covtype = csvc_poly_covtype.get_prediction(X_test)
 
+    # grid search for multinomial Vector Classification
+    # as above --> params = {'max_iter': (100, 200, 500, 1000)}
+    csvc_poly_covtype_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='grid search C-Support Multinomial Vector Classification for the covertypes dataset',
+        params=params)
+    y_pred_covtype_grid = csvc_poly_covtype_grid.get_prediction(X_test)
+
     printAccuracySVN(
         models=(
             lsvc_covtype,
             csvc_covtype,
-            csvc_poly_covtype),
+            csvc_poly_covtype,
+            csvc_poly_covtype_grid),
         predictions=(
             y_pred_lsvc_covtype,
             y_pred_csvc_covtype,
-            y_pred_csvc_poly_covtype))
-
-#
-    # grid search for multinomial logistic regression
-    # as above --> params = {'max_iter': (100, 200, 500, 1000)}
-#
-    # lgm_digit_grid = GridSearcher(
-    #    X_train,
-    #    y_train,
-    #    description='grid search logistic regression model with multinomial solver for the digits dataset',
-    #    params=params)
-    # y_pred_digit_grid = lgm_digit_grid.get_prediction(X_test)
-    # printAccuracy(
-    #    models=(
-    #        lgm_digit_grid,),
-    #    predictions=(
-    #        y_pred_digit_grid,))
+            y_pred_csvc_poly_covtype,
+            y_pred_covtype_grid))
