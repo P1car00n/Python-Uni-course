@@ -1,6 +1,8 @@
-from sklearn.metrics import confusion_matrix, r2_score, recall_score, f1_score, precision_recall_curve, roc_curve, roc_auc_score
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import (confusion_matrix, f1_score,
+                             precision_recall_curve, r2_score, recall_score,
+                             roc_auc_score, roc_curve)
 from sklearn.model_selection import GridSearchCV
+from sklearn.tree import DecisionTreeClassifier
 
 import data_provider
 
@@ -164,14 +166,28 @@ if __name__ == '__main__':
     y_pred_dtc_websites = dtc_websites.get_prediction(X_test)
 
     # Grid search
+    # setting up the parameters
+    params = {
+        'min_samples_split': (
+            2, 4, 6), 'min_samples_leaf': (
+            1, 3, 6), 'max_leaf_nodes': (
+                3, 6, None), 'max_features': (
+                    'sqrt', 'log2', None)}
+
+    dtc_websites_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='A grid search decision tree classifer for the websites dataset',
+        params=params)
+    y_pred_dtc_websites_grid = dtc_websites_grid.get_prediction(X_test)
 
     printAccuracy(
         models=(
             dtc_websites,
-            mnb_circle),
+            dtc_websites_grid),
         predictions=(
             y_pred_dtc_websites,
-            y_pred_mnb_circle))
+            y_pred_dtc_websites_grid))
 
     # reinitialize Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getNumbersXy()
@@ -190,25 +206,19 @@ if __name__ == '__main__':
     y_pred_dtc_numbers = dtc_numbers.get_prediction(X_test)
 
     # Grid search
+    # reusing the parameters
+
+    dtc_numbers_grid = GridSearcher(
+        X_train,
+        y_train,
+        description='A grid search decision tree classifer for the numbers dataset',
+        params=params)
+    y_pred_dtc_numbers_grid = dtc_numbers_grid.get_prediction(X_test)
 
     printAccuracy(
         models=(
             dtc_numbers,
-            mnb_circle),
+            dtc_numbers_grid),
         predictions=(
             y_pred_dtc_numbers,
-            y_pred_mnb_circle))
-
-    # grid search for multinomial Vector Classification
-    params = {
-        'C': (
-            1.0, 2.0, 5.0, 10.0), 'degree': (
-            3, 6, 9, 12), 'coef0': (
-                0.0, 2.0, 5.0, 10.0), 'probability': (
-                    False, True)}
-    csvc_poly_moon_grid = GridSearcher(
-        X_train,
-        y_train,
-        description='grid search C-Support Multinomial Vector Classification for the moons dataset',
-        params=params)
-    y_pred_moon_grid = csvc_poly_moon_grid.get_prediction(X_test)
+            y_pred_dtc_numbers_grid))
