@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 
 
 def getWebsitesXy(test_size=0.2):
-    # input(('Path to the train dataset: '))
+    # TODO: input(('Path to the train dataset: '))
     # Since the decision trees implemented in scikit-learn use only numerical
     # features and these features are interpreted always as continuous numeric
     # variables, we drop them
@@ -25,4 +25,13 @@ def getWebsitesXy(test_size=0.2):
     y_train = dataset_train['Type']
     X_test = dataset_test
     y_test = dataset_test['Type']
+    return X_train, X_test, y_train, y_test
+
+
+def getNumbersXy(test_size=0.2):
+    np.random.seed(0)
+    X = np.random.randn(300, 2)
+    y = np.logical_xor(X[:, 0] > 0, X[:, 1] > 0)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size)
     return X_train, X_test, y_train, y_test
