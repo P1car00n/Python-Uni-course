@@ -1,5 +1,5 @@
 from sklearn.metrics import (confusion_matrix, f1_score,
-                             precision_recall_curve, r2_score, recall_score,
+                             precision_recall_curve, recall_score,
                              roc_auc_score, roc_curve)
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
@@ -52,7 +52,7 @@ class GridSearcher(Model):
                 DecisionTreeClassifier(),
                 param_grid=params,
                 n_jobs=-1,
-                verbose=2).fit(
+                verbose=1).fit(
                 X,
                 y))
 
@@ -78,8 +78,9 @@ if __name__ == '__main__':
             # Xs and ys are visible in the scope
             print('Prediction accuracy for', model,
                   'is', model.get_score(X_train, y_train))
-            print('Prediction accuracy of y_test for',
-                  model, 'is', r2_score(y_test, prediction))
+            # can't be checked, as there are bool values in y_pred
+            # print('Prediction accuracy of y_test for',
+            #      model, 'is', r2_score(y_test, prediction))
 
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
@@ -142,7 +143,7 @@ if __name__ == '__main__':
                 'for test data')
 
             # predict_proba
-            train_proba = model.get_prediction_proba(X_train[:2, :])
+            train_proba = model.get_prediction_proba(X_train)
             print(
                 'Posterior probability estimates for',
                 model,
