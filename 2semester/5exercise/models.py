@@ -178,7 +178,7 @@ if __name__ == '__main__':
     dtc_websites_grid = GridSearcher(
         X_train,
         y_train,
-        description='A grid search decision tree classifer for the websites dataset',
+        description='a grid search decision tree classifier for the websites dataset',
         params=params)
     y_pred_dtc_websites_grid = dtc_websites_grid.get_prediction(X_test)
 
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     dtc_numbers_grid = GridSearcher(
         X_train,
         y_train,
-        description='A grid search decision tree classifer for the numbers dataset',
+        description='a grid search decision tree classifier for the numbers dataset',
         params=params)
     y_pred_dtc_numbers_grid = dtc_numbers_grid.get_prediction(X_test)
 
