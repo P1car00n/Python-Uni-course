@@ -158,7 +158,7 @@ if __name__ == '__main__':
     dtc_websites = DTC(
         X_train,
         y_train,
-        description='A decision tree classifer for the websites dataset',
+        description='a decision tree classifier for the websites dataset',
         max_depth=None,
         min_samples_split=2,
         min_samples_leaf=1,
@@ -198,7 +198,7 @@ if __name__ == '__main__':
     dtc_numbers = DTC(
         X_train,
         y_train,
-        description='A decision tree classifer for the random numbers',
+        description='a decision tree classifier for the random numbers',
         max_depth=None,
         min_samples_split=2,
         min_samples_leaf=1,
