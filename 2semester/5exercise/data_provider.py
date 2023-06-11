@@ -24,10 +24,10 @@ def getWebsitesXy(test_size=0.2):
     dataset_train, dataset_test = train_test_split(
         dataset, test_size=test_size)
 
-    X_train = dataset_train
+    X_train = dataset_train.drop('Type', axis=1)
     # here I'm setting which column I want to have predicted
     y_train = dataset_train['Type']
-    X_test = dataset_test
+    X_test = dataset_test.drop('Type', axis=1)
     y_test = dataset_test['Type']
     return X_train, X_test, y_train, y_test
 
