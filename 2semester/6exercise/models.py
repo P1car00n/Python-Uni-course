@@ -1,5 +1,5 @@
 from sklearn.metrics import (confusion_matrix, f1_score,
-                             precision_recall_curve, recall_score,
+                             precision_recall_curve, r2_score, recall_score,
                              roc_auc_score, roc_curve)
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import make_pipeline
@@ -62,9 +62,8 @@ if __name__ == '__main__':
             # Xs and ys are visible in the scope
             print('Prediction accuracy for', model,
                   'is', model.get_score(X_train, y_train))
-            # can't be checked, as there are bool values in y_pred
-            # print('Prediction accuracy of y_test for',
-            #      model, 'is', r2_score(y_test, prediction))
+            print('Prediction accuracy of y_test for',
+                   model, 'is', r2_score(y_test, prediction))
 
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
