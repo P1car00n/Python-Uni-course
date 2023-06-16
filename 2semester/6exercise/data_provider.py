@@ -11,5 +11,5 @@ def getBlobsXy():
                       cluster_std=clusters_std, random_state=0, shuffle=False)
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.1)
-    X_control, X_control_train, y_control, y_control_train = train_test_split(X_train, y_train)
+    X_control, X_control_train, y_control, y_control_train = train_test_split(X_train, y_train, test_size=0.1)
     return X_train, X_test, y_train, y_test, X_control, X_control_train, y_control, y_control_train
