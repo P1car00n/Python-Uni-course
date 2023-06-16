@@ -1,11 +1,14 @@
-from sklearn.datasets import make_classification
+import matplotlib.pyplot as plt
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
 
 import data_provider
 
-X_train, X_test, y_train, y_test = data_provider.getBlobsXy(return_no_control=True)
+X_train, X_test, y_train, y_test = data_provider.getBlobsXy(
+    return_no_control=True)
 
 # Create a random forest classifier with different parameter values
 rf1 = RandomForestClassifier(
@@ -32,11 +35,13 @@ rf4 = RandomForestClassifier(
 # Create a voting classifier with the random forest classifiers
 voting_clf_hard = VotingClassifier(
     estimators=[
-        ('rf1', rf1), ('rf2', rf2), ('rf3', rf3), ('rf4', rf4)], voting='hard')
+        ('rf1', rf1), ('rf2', rf2), ('rf3', rf3), ('rf4', rf4)], voting='hard', weights=[
+            2, 1, 2, 1])
 
 voting_clf_soft = VotingClassifier(
     estimators=[
-        ('rf1', rf1), ('rf2', rf2), ('rf3', rf3), ('rf4', rf4)], voting='soft')
+        ('rf1', rf1), ('rf2', rf2), ('rf3', rf3), ('rf4', rf4)], voting='soft', weights=[
+            1, 2, 1, 2])
 
 # Fit the voting classifier on the training data
 voting_clf_hard.fit(X_train, y_train)
@@ -47,5 +52,8 @@ y_pred_hard = voting_clf_hard.predict(X_test)
 y_pred_soft = voting_clf_soft.predict(X_test)
 
 # Evaluate the accuracy of the ensemble
-accuracy = [accuracy_score(y_test, y_pred_hard), accuracy_score(y_test, y_pred_soft)]
+accuracy = [
+    accuracy_score(
+        y_test, y_pred_hard), accuracy_score(
+            y_test, y_pred_soft)]
 print("Accuracy for hard and soft voting:", accuracy)

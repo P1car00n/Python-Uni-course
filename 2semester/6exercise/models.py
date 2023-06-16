@@ -1,4 +1,9 @@
-from sklearn.metrics import (confusion_matrix, f1_score,
+from itertools import product
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
                              precision_recall_curve, r2_score, recall_score,
                              roc_auc_score, roc_curve)
 from sklearn.neural_network import MLPClassifier
@@ -63,7 +68,7 @@ if __name__ == '__main__':
             print('Prediction accuracy for', model,
                   'is', model.get_score(X_train, y_train))
             print('Prediction accuracy of y_test for',
-                   model, 'is', r2_score(y_test, prediction))
+                  model, 'is', r2_score(y_test, prediction))
 
             # recall score
             train_RC_acc = recall_score(y_train, train_E)
@@ -142,23 +147,22 @@ if __name__ == '__main__':
         X_train,
         y_train,
         description='multi-layer Perceptron classifier for blobs',
-        hidden_layer_sizes = (100,))
+        hidden_layer_sizes=(100,))
     y_pred_mplc100_blobs = mplc100_blobs.get_prediction(X_test)
 
     mplc300_blobs = MLPC(
         X_train,
         y_train,
         description='multi-layer Perceptron classifier for blobs',
-        hidden_layer_sizes = (300,))
+        hidden_layer_sizes=(300,))
     y_pred_mplc300_blobs = mplc300_blobs.get_prediction(X_test)
 
     mplc500_blobs = MLPC(
         X_train,
         y_train,
         description='multi-layer Perceptron classifier for blobs',
-        hidden_layer_sizes = (500,))
+        hidden_layer_sizes=(500,))
     y_pred_mplc500_blobs = mplc500_blobs.get_prediction(X_test)
-
 
     printAccuracy(
         models=(
@@ -169,3 +173,42 @@ if __name__ == '__main__':
             y_pred_mplc100_blobs,
             y_pred_mplc300_blobs,
             y_pred_mplc500_blobs))
+
+
+    ## Ensembles Voting
+    #clf1 = MLPClassifier(hidden_layer_sizes=(100,))
+    #clf2 = MLPClassifier(hidden_layer_sizes=(300,))
+    #clf3 = MLPClassifier(hidden_layer_sizes=(500,))
+    #voting_clf_hard = VotingClassifier(
+    #    estimators=[
+    #        ('clf1',
+    #         clf1),
+    #        ('clf2',
+    #         clf2),
+    #        ('clf3',
+    #         clf3)],
+    #    voting='hard')
+    #voting_clf_hard.fit(X_train, y_train)
+    #y_pred_hard = voting_clf_hard.predict(X_test)
+    #accuracy = accuracy_score(y_test, y_pred_hard)
+#
+    ## Plotting decision boundaries
+    #x_min, x_max = X_train[:, 0].min() - 1, X_train[:, 0].max() + 1
+    #y_min, y_max = y_train[:, 1].min() - 1, y_train[:, 1].max() + 1
+    #xx, yy = np.meshgrid(
+    #    np.arange(
+    #        x_min, x_max, 0.1), np.arange(
+    #        y_min, y_max, 0.1))
+    #f, axarr = plt.subplots(2, 2, sharex='col', sharey='row', figsize=(10, 8))
+#
+    #for idx, clf, tt in zip(product([0, 1], [0, 1]), [clf1, clf2, clf3, voting_clf_hard], [
+    #                        'Multi-layer Perceptron, Hidden layer size -- 100', 'Multi-layer Perceptron, Hidden layer size -- 300', 'Multi-layer Perceptron, Hidden layer size -- 500', 'Hard Voting']):
+    #    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    #    Z = Z.reshape(xx.shape)
+    #    axarr[idx[0], idx[1]].contourf(xx, yy, Z, alpha=0.4)
+    #    axarr[idx[0], idx[1]].scatter(
+    #        X_train[:, 0], X_train[:, 1], c=y_train, s=20, edgecolor='k')
+    #    axarr[idx[0], idx[1]].set_title(tt)
+#
+    #plt.show()
+#
