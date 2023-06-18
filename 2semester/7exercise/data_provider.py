@@ -1,9 +1,9 @@
 import numpy as np
-from sklearn.datasets import make_blobs
-from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
-from sklearn.decomposition import PCA
 from sklearn.cluster import SpectralClustering
+from sklearn.datasets import make_blobs
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
 
 
 def getBlobsXy(test_size=0.2, plot=False):
@@ -15,11 +15,11 @@ def getBlobsXy(test_size=0.2, plot=False):
                       cluster_std=clusters_std, random_state=0, shuffle=False)
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size)
-    
+
     if plot:
         make_plot(X, y=y)
         return
-    
+
     return X_train, X_test, y_train, y_test
 
 
@@ -36,23 +36,28 @@ def getClusterX(plot=False):
 
     if plot:
         # takes too long, can't proceed
-        spectral1 = SpectralClustering(n_clusters=6, affinity="nearest_neighbors", n_jobs=-1).fit_predict(X)
+        spectral1 = SpectralClustering(
+            n_clusters=6,
+            affinity="nearest_neighbors",
+            n_jobs=-1).fit_predict(X)
         make_plot(X, spectral1=spectral1)
         return
 
     return X
 
+
 def make_plot(X, y=None, spectral1=None):
     pca = PCA(n_components=2)
     proj = pca.fit_transform(X)
     if spectral1 is not None and y is None:
-        plt.scatter(proj[:, 0], proj[:, 1], c = spectral1, cmap="Paired")
+        plt.scatter(proj[:, 0], proj[:, 1], c=spectral1, cmap="Paired")
     elif y is not None and spectral1 is None:
-        plt.scatter(proj[:, 0], proj[:, 1], c = y, cmap="Paired")
+        plt.scatter(proj[:, 0], proj[:, 1], c=y, cmap="Paired")
     else:
         return
     plt.colorbar()
     plt.show()
+
 
 if __name__ == '__main__':
     choice = input('1 for blobs, 2 for clusters: ')
