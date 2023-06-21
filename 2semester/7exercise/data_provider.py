@@ -35,9 +35,9 @@ def getClusterX(plot=False):
     X = np.vstack((C1, C2, C3, C4, C5, C6))
 
     if plot:
-        # takes too long, can't proceed
         spectral1 = SpectralClustering(
-            n_clusters=6,
+            n_clusters=2,
+            eigen_solver='amg',
             affinity="nearest_neighbors",
             n_jobs=-1).fit_predict(X)
         make_plot(X, spectral1=spectral1)
