@@ -39,6 +39,18 @@ class KM(Model):
                        model=KMeans(**kwargs).fit(X, y))
 
 
+class MBKM(Model):
+
+    def __init__(
+            self,
+            X,
+            y,
+            description='Mini-Batch K-Means clustering',
+            **kwargs):
+        Model.__init__(self, description,
+                       model=MiniBatchKMeans(**kwargs).fit(X, y))
+
+
 if __name__ == '__main__':
     def printAccuracy(models, predictions):
         print('~' * 90)
@@ -57,7 +69,7 @@ if __name__ == '__main__':
 
             #  Davies-Bouldin score
             db = davies_bouldin_score(X=X_train, labels=model.get_labels())
-            print(' Davies-Bouldin score for', model, 'is as follows: \n', db)
+            print('Davies-Bouldin score for', model, 'is as follows: \n', db)
 
     # set Xs and ys
     X_train, X_test, y_train, y_test = data_provider.getBlobsXy()
@@ -71,10 +83,20 @@ if __name__ == '__main__':
         n_clusters=2)
     y_pred_km_blobs = km_blobs.get_prediction(X_test)
 
+    # Mini-Batch K-Means clustering
+    mbkm_blobs = MBKM(
+        X_train,
+        y_train,
+        description='a Mini-Batch K-Means clustering for blobs',
+        n_clusters=2)
+    y_pred_mbkm_blobs = mbkm_blobs.get_prediction(X_test)
+
     printAccuracy(
         models=(
             km_blobs,
+            mbkm_blobs
         ),
         predictions=(
             y_pred_km_blobs,
+            y_pred_mbkm_blobs
         ))
