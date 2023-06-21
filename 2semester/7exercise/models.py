@@ -55,10 +55,10 @@ if __name__ == '__main__':
         for (model, prediction) in zip(models, predictions):
 
             # Rand index adjusted for chance
-            # rand = adjusted_rand_score(
-            #    labels_true=y_test, labels_pred=prediction)
-            # print('Rand index adjusted for chance for',
-            #      model, 'is as follows: \n', rand)
+            rand = adjusted_rand_score(
+               labels_true=y, labels_pred=prediction)
+            print('Rand index adjusted for chance for',
+                 model, 'is as follows: \n', rand)
 
             # Calinski and Harabasz score
             cnh = calinski_harabasz_score(
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             print('Davies-Bouldin score for', model, 'is as follows: \n', db)
 
     # set Xs and ys
-    X = data_provider.getBlobsX()
+    X, y = data_provider.getBlobsX()
 
     # Blobs
     # K-Means clustering
@@ -99,21 +99,21 @@ if __name__ == '__main__':
         ))
 
     # reset Xs and ys
-    X = data_provider.getClusterX()
+    X, y = data_provider.getClusterX()
 
     # Clusters
     # K-Means clustering
     km_clusters = KM(
         X,
         description='a K-Means clustering for clusters',
-        n_clusters=2)
+        n_clusters=6)
     pred_km_clusters = km_clusters.get_prediction(X)
 
     # Mini-Batch K-Means clustering
     mbkm_clusters = MBKM(
         X,
         description='a Mini-Batch K-Means clustering for clusters',
-        n_clusters=2)
+        n_clusters=6)
     pred_mbkm_clusters = mbkm_clusters.get_prediction(X)
 
     printAccuracy(
