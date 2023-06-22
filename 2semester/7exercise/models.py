@@ -1,6 +1,8 @@
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.metrics import (adjusted_rand_score, calinski_harabasz_score,
                              davies_bouldin_score)
+from sklearn.decomposition import PCA
+from matplotlib import pyplot as plt
 
 import data_provider
 
@@ -50,6 +52,14 @@ class MBKM(Model):
 
 
 if __name__ == '__main__':
+    def visualize(X, y):
+        pca = PCA(n_components=2)
+        proj = pca.fit_transform(X)
+        plt.figure(1)
+        plt.scatter(proj[:, 0], proj[:, 1], c=y)
+        plt.show()
+
+
     def printAccuracy(models, predictions):
         print('~' * 90)
         for (model, prediction) in zip(models, predictions):
@@ -69,6 +79,9 @@ if __name__ == '__main__':
             #  Davies-Bouldin score
             db = davies_bouldin_score(X, labels=prediction)
             print('Davies-Bouldin score for', model, 'is as follows: \n', db)
+
+            # visualizing
+            visualize(X, prediction)
 
     # set Xs and ys
     X, y = data_provider.getBlobsX()
