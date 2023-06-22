@@ -1,8 +1,8 @@
+from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans, MiniBatchKMeans
+from sklearn.decomposition import PCA
 from sklearn.metrics import (adjusted_rand_score, calinski_harabasz_score,
                              davies_bouldin_score)
-from sklearn.decomposition import PCA
-from matplotlib import pyplot as plt
 
 import data_provider
 
@@ -36,8 +36,13 @@ class KM(Model):
             X,
             description='K-Means clustering',
             **kwargs):
-        Model.__init__(self, description,
-                       model=KMeans(**kwargs).fit(X))
+        Model.__init__(
+            self,
+            description,
+            model=KMeans(
+                max_iter=600,
+                n_init='auto',
+                **kwargs).fit(X))
 
 
 class MBKM(Model):
@@ -58,7 +63,6 @@ if __name__ == '__main__':
         plt.figure(1)
         plt.scatter(proj[:, 0], proj[:, 1], c=y)
         plt.show()
-
 
     def printAccuracy(models, predictions):
         print('~' * 90)
@@ -90,9 +94,31 @@ if __name__ == '__main__':
     # K-Means clustering
     km_blobs = KM(
         X,
-        description='a K-Means clustering for blobs',
+        description='a K-Means clustering for blobs with lloyd',
         n_clusters=2)
     pred_km_blobs = km_blobs.get_prediction(X)
+
+    km_blobs1 = KM(
+        X,
+        description='a K-Means clustering for blobs with elkan',
+        n_clusters=2,
+        algorithm='elkan')
+    pred_km_blobs1 = km_blobs1.get_prediction(X)
+
+    km_blobs_rand = KM(
+        X,
+        description='a K-Means clustering for blobs with lloyd and random initialization',
+        n_clusters=2,
+        init='random')
+    pred_km_blobs_rand = km_blobs_rand.get_prediction(X)
+
+    km_blobs1_rand = KM(
+        X,
+        description='a K-Means clustering for blobs with elkan and random initialization',
+        n_clusters=2,
+        algorithm='elkan',
+        init='random')
+    pred_km_blobs1_rand = km_blobs1_rand.get_prediction(X)
 
     # Mini-Batch K-Means clustering
     mbkm_blobs = MBKM(
@@ -104,10 +130,16 @@ if __name__ == '__main__':
     printAccuracy(
         models=(
             km_blobs,
+            km_blobs1,
+            km_blobs_rand,
+            km_blobs1_rand,
             mbkm_blobs
         ),
         predictions=(
             pred_km_blobs,
+            pred_km_blobs1,
+            pred_km_blobs_rand,
+            pred_km_blobs1_rand,
             pred_mbkm_blobs
         ))
 
@@ -118,9 +150,31 @@ if __name__ == '__main__':
     # K-Means clustering
     km_clusters = KM(
         X,
-        description='a K-Means clustering for clusters',
+        description='a K-Means clustering for clusters with lloyd',
         n_clusters=6)
     pred_km_clusters = km_clusters.get_prediction(X)
+
+    km_clusters1 = KM(
+        X,
+        description='a K-Means clustering for clusters with elkan',
+        n_clusters=2,
+        algorithm='elkan')
+    pred_km_clusters1 = km_clusters1.get_prediction(X)
+
+    km_clusters_rand = KM(
+        X,
+        description='a K-Means clustering for clusters with lloyd and random initialization',
+        n_clusters=2,
+        init='random')
+    pred_km_clusters_rand = km_clusters_rand.get_prediction(X)
+
+    km_clusters1_rand = KM(
+        X,
+        description='a K-Means clustering for clusters with elkan and random initialization',
+        n_clusters=2,
+        algorithm='elkan',
+        init='random')
+    pred_km_clusters1_rand = km_clusters1_rand.get_prediction(X)
 
     # Mini-Batch K-Means clustering
     mbkm_clusters = MBKM(
@@ -132,9 +186,15 @@ if __name__ == '__main__':
     printAccuracy(
         models=(
             km_clusters,
+            km_clusters1,
+            km_clusters_rand,
+            km_clusters1_rand,
             mbkm_clusters
         ),
         predictions=(
             pred_km_clusters,
+            pred_km_clusters1,
+            pred_km_clusters_rand,
+            pred_km_clusters1_rand,
             pred_mbkm_clusters
         ))
