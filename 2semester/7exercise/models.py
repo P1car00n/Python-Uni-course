@@ -56,9 +56,9 @@ if __name__ == '__main__':
 
             # Rand index adjusted for chance
             rand = adjusted_rand_score(
-               labels_true=y, labels_pred=prediction)
+                labels_true=y, labels_pred=prediction)
             print('Rand index adjusted for chance for',
-                 model, 'is as follows: \n', rand)
+                  model, 'is as follows: \n', rand)
 
             # Calinski and Harabasz score
             cnh = calinski_harabasz_score(

@@ -31,29 +31,35 @@ def getClusterX(plot=False):
     C6 = [5, 6] + 2.0 * np.random.randn(n_points_per_cluster, 2)
     X = np.vstack((C1, C2, C3, C4, C5, C6))
 
+    y = np.concatenate((
+        np.zeros(n_points_per_cluster),
+        np.ones(n_points_per_cluster),
+        2 * np.ones(n_points_per_cluster),
+        3 * np.ones(n_points_per_cluster),
+        4 * np.ones(n_points_per_cluster),
+        5 * np.ones(n_points_per_cluster)
+    ))
+
+    # y = np.column_stack((X, labels))
+
     # using it istead of y, as there are no labels
-    spectral1 = SpectralClustering(
-            n_clusters=6,
-            eigen_solver='amg',
-            affinity="nearest_neighbors",
-            n_jobs=-1).fit_predict(X)
-    
+    # spectral1 = SpectralClustering(
+    #    n_clusters=6,
+    #    eigen_solver='amg',
+    #    affinity="nearest_neighbors",
+    #    n_jobs=-1).fit_predict(X)
+
     if plot:
-        make_plot(X, spectral1=spectral1)
+        make_plot(X, y)
         return
 
-    return X, spectral1
+    return X, y
 
 
-def make_plot(X, y=None, spectral1=None):
+def make_plot(X, y):
     pca = PCA(n_components=2)
     proj = pca.fit_transform(X)
-    if spectral1 is not None and y is None:
-        plt.scatter(proj[:, 0], proj[:, 1], c=spectral1, cmap="Paired")
-    elif y is not None and spectral1 is None:
-        plt.scatter(proj[:, 0], proj[:, 1], c=y, cmap="Paired")
-    else:
-        return
+    plt.scatter(proj[:, 0], proj[:, 1], c=y, cmap="Paired")
     plt.colorbar()
     plt.show()
 
