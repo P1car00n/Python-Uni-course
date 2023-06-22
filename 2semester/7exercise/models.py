@@ -1,3 +1,4 @@
+import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.decomposition import PCA
@@ -24,6 +25,9 @@ class Model:
 
     def get_labels(self):
         return self.model.labels_
+
+    def get_cluster_centers(self):
+        return self.model.cluster_centers_
 
     def __repr__(self) -> str:
         return self.description
@@ -62,11 +66,14 @@ class MBKM(Model):
 
 
 if __name__ == '__main__':
-    def visualize(X, y):
+    def visualize(X, y, model):
         pca = PCA(n_components=2)
         proj = pca.fit_transform(X)
         plt.figure(1)
         plt.scatter(proj[:, 0], proj[:, 1], c=y)
+
+        centroids = model.get_cluster_centers()
+        plt.scatter(centroids[:, 0], centroids[:, 1], s=80, color='black')
         plt.show()
 
     def printAccuracy(models, predictions):
@@ -90,7 +97,7 @@ if __name__ == '__main__':
             print('Davies-Bouldin score for', model, 'is as follows: \n', db)
 
             # visualizing
-            visualize(X, prediction)
+            visualize(X, prediction, model)
 
     # set Xs and ys
     X, y = data_provider.getBlobsX()
